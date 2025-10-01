@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sample HTML Table</title>
+    <!-- Include Chart.js -->
+
+    <style>
+      tml,
+      body {
+        margin: 0;
+        padding: 0px;
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: 100;
+        font-size: 7px;
+        -webkit-print-color-adjust: exact;
+        box-sizing: border-box;
+      }
+
+      .page {
+        position: relative;
+
+        display: block;
+        background: white;
+        page-break-after: auto;
+        margin: 50px;
+        overflow: hidden;
+      }
+
+      @media print {
+        body {
+          background: white;
+        }
+
+        .page {
+          margin: 0;
+          height: 100%;
+          width: 100%;
+        }
+      }
+
+      .page.first {
+        border-left: 5px solid green;
+      }
+
+      .bottom {
+        position: absolute;
+        left: 5mm;
+        right: 5mm;
+        bottom: 5mm;
+      }
+
+      .group {
+        margin-top: 3mm;
+      }
+
+      .line {
+        color: white;
+        position: relative;
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      .logo {
+        position: relative;
+        width: 80%;
+        left: 10%;
+        top: 15%;
+      }
+      table {
+        font-family: 'Times New Roman', Times, serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+      td,
+      th {
+        text-align: left;
+      }
+      .result td,
+      .result th {
+        border: 1px solid black;
+        text-align: left;
+        padding: 8px;
+      }
+
+      .result tr:nth-child(even) {
+        background-color: #f7f5f5;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        justify-content: space-between;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 20px;
+      }
+      .image-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      table img {
+        width: 58px;
+        height: 58px;
+        margin-bottom: 8px;
+        border-radius: 5px;
+        -webkit-box-reflect: below 0px linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
+        border: 1px solid blue;
+      }
+      .info {
+        font-size: 10px;
+      }
+      .topic {
+        margin-top: 8px;
+      }
+      .topic img {
+        width: 256px;
+        height: 96px;
+        margin-bottom: 8px;
+      }
+      .double-line {
+        border: 0;
+        height: 0;
+        position: relative;
+        margin: 2px 0;
+      }
+
+      .double-line::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        border-top: 2px solid rgb(71, 71, 71);
+      }
+
+      .double-line::after {
+        content: '';
+        position: absolute;
+        top: 3px; /* Adjust spacing between lines */
+        left: 0;
+        width: 100%;
+        margin-bottom: 10px;
+        border-top: 1px solid rgb(68, 68, 68);
+      }
+      .info {
+        font-family: 'Times New Roman', Times, serif;
+        line-height: 2.5;
+        margin: 0px;
+      }
+      .info .label {
+        font-family: 'Times New Roman', Times, serif;
+        text-transform: uppercase;
+      }
+      .info .value {
+        text-decoration: underline;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+      .info div {
+        margin-bottom: 0px;
+      }
+      .letterhead {
+        text-align: center;
+        font-size: 13px;
+        text-transform: uppercase;
+        margin: 0px;
+      }
+      .letterhead img {
+        max-width: 100%; /* Scales image to fit within the container width */
+        max-height: 70px; /* Limits the maximum height of the image */
+        width: auto; /* Allows width to adjust automatically */
+        height: auto; /* Maintains aspect ratio */
+        display: block; /* Ensures proper alignment */
+        margin: 0 auto 10px; /* Centers the image horizontally and adds space below */
+      }
+
+      .letterhead .school-name {
+        font-weight: bold;
+        text-transform: uppercase;
+
+        font-size: 15px; /* Adjust the size as needed */
+      }
+      .letterhead .address {
+        text-transform: uppercase;
+        font-size: 8px; /* Adjust the size as needed */
+      }
+      td {
+        position: relative;
+      }
+      td::after {
+        content: '';
+        position: absolute;
+        right: -1px;
+        top: 0;
+        height: 100%;
+        width: 1px;
+        background-color: #000;
+      }
+      .learning_area {
+        page-break-inside: avoid; /* or avoid */
+        }
+        tr {
+            page-break-inside: avoid; /* Prevent page breaks inside table rows */
+        }
+        td, th {
+            page-break-inside: avoid; /* Prevent page breaks inside table cells */
+        }
+
+    </style>
+  </head>
+  <body>
+    <div class="letterhead">
+      <img src="<%= logoDataUrl %>" alt="School Logo" />
+      <div class="school-name"><%= school.name %> </div>
+      <div class="school-name">Performance Analysis</div>
+      <div class="info">
+        <% if (header && header.stream) { %>
+          <span class="label">STREAM:</span> <span class="value"><%= header.stream %></span>
+      <% } else { %>
+          <span class="label">STREAM:</span> <span class="value">overall</span>
+      <% } %>
+      
+      <% if (header && header.grade) { %>
+          <span class="label">GRADE:</span> <span class="value"><%= header.grade %></span>
+    
+      <% } %>
+      </div>
+      <div class="address">
+        <i><%= school.address %></i>
+      </div>
+
+    </div>
+    <div class="double-line"></div>
+    <div class=""></div>
+    <img src="<%= herologoDataUrl %>" style="display:none" alt="Learner" > 
+        <% let lastLearningArea = ''; %> <!-- Variable to tsrack the last learning area -->
+        <% data.forEach(item => { %>
+            <% if (lastLearningArea !== item.learning_area) { %>
+                <% if (lastLearningArea !== '') { %> <!-- Close previous table if not the first table -->
+                    </tbody>
+                </table>
+            </div>
+                <% } %>
+              <div class="learning_area">  <h3><%= item.learning_area %></h3> <!-- Header for the learning area -->
+                <table border="1" class="result" cellpadding="10">
+                    <thead>
+                        <tr>
+
+                            <th>Score</th>
+                            <th>Mark</th>
+                            <th>Number of Learners</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                <% lastLearningArea = item.learning_area; // Update lastLearningArea variable %>
+            <% } %>
+                <% item.analysis.forEach(analysis => { %>
+                    <tr>
+
+                        <td><%= analysis.mark %></td>
+                        <td><%= analysis.score %></td>
+                        <td><%= analysis.count %></td>
+                    </tr>
+                <% }); %>
+        <% }); %>
+        </tbody>
+        </table> <!-- Close the last table -->
+  
+</body>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Add all files to staging area
+git add .
+# Commit changes with a specified message passed as an argument
+git commit -m "$1"
+
+# Push changes to the remote repository
+git push

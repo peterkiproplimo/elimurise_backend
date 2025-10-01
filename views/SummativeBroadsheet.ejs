@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: 300;
+        box-sizing: border-box;
+        line-height: 1.4;
+      }
+
+      .page {
+        position: relative;
+        display: block;
+        page-break-after: always;
+        margin: 25mm;
+        overflow: hidden;
+      }
+
+      @media print {
+        body {
+          background: white;
+        }
+        .page {
+          margin: 0;
+          padding: 15mm;
+        }
+        @page {
+          margin: 15mm;
+        }
+      }
+
+      .watermark {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        font-size: 48px;
+        font-weight: 100;
+        letter-spacing: 2px;
+        opacity: 0.05;
+        z-index: -1;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+
+      .letterhead {
+        text-align: center;
+        text-transform: uppercase;
+        margin: 0 0 15mm;
+        padding-bottom: 5mm;
+        border-bottom: 1px solid #000;
+        position: relative;
+      }
+
+      .letterhead img {
+        max-width: 120px;
+        max-height: 120px;
+        width: auto;
+        height: auto;
+        display: block;
+        margin: 0 auto 10mm;
+        border: 1px solid #000;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .letterhead .school-name {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        margin-bottom: 2mm;
+      }
+
+      .letterhead .subtitle {
+        font-size: 18px;
+        font-style: italic;
+        font-weight: 300;
+        margin: 2mm 0;
+      }
+
+      .letterhead .address {
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: 0.5px;
+      }
+
+      .info {
+        font-size: 12px;
+        line-height: 1.8;
+        margin: 5mm 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10mm;
+      }
+
+      .info .label {
+        font-size: 10px;
+        font-weight: 400;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-right: 2mm;
+      }
+
+      .info .value {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        border-bottom: 1px solid #000;
+      }
+
+      .double-line {
+        border: 0;
+        height: 0;
+        position: relative;
+        margin: 15mm 0;
+      }
+
+      .double-line::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        border-top: 2px solid #000;
+      }
+
+      .double-line::after {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 0;
+        width: 100%;
+        border-top: 1px solid #000;
+      }
+
+      .result {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        margin-top: 10mm;
+      }
+
+      .result th {
+        font-weight: 100;
+        text-transform: uppercase;
+        letter-spacing: 0.1px;
+        padding: 3mm 2mm;
+        border-bottom: 2px solid #000;
+        border-top: 1px solid #000;
+      }
+
+      .result td {
+        padding: 2mm 2mm;
+        border: 1px solid #000;
+        vertical-align: middle;
+      }
+
+      .result tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+
+      .result thead {
+        display: table-header-group;
+      }
+
+      .result tbody {
+        display: table-row-group;
+      }
+
+      .summary-row td {
+        font-weight: 600;
+        padding: 3mm 2mm;
+        border-top: 2px solid #000;
+      }
+
+      table,
+      tr,
+      td {
+        page-break-inside: avoid;
+      }
+
+      @media print {
+        .page {
+          page-break-before: always;
+        }
+      }
+
+      .result {
+        table-layout: fixed;
+      }
+    </style>
+  </head>
+  <body>
+    <% const firstPageRows = 13; const subsequentPageRows = 20; const totalRows = data.length; %> <% const subjects =
+    Array.from(new Set(data.flatMap(item => Object.keys(item.assessments)))); %> <% const totalWidth = 190; const
+    fixedWidths = { index: 8, admNo: 15, name: 30, stream: 13, subject: subjects.length > 0 ? (totalWidth - 10 - 15 - 30
+    - 10 - 10 - 10 - 10) / subjects.length : 0, total: 10, avg: 10, pos: 10 }; %>
+
+    <!-- First Page -->
+    <div class="page">
+      <div class="watermark"><%= school.name %></div>
+      <div class="letterhead">
+        <img src="<%= logoDataUrl %>" alt="School Logo" />
+        <div class="school-name"><%= school.name %></div>
+        <div class="subtitle">Learners' Summative Performance Report</div>
+        <div class="address"><i><%= school.address %></i></div>
+        <div class="info">
+          <div><span class="label">Test: </span> <span class="value"><%= testData?.name %>&nbsp;&nbsp;</span></div>
+          <div>
+            <span class="label">Type:</span> <span class="value"><%= testData?.type %> &nbsp;&nbsp;</span>,
+            <span class="label">Term:</span> <span class="value"><%= term %>&nbsp;&nbsp;</span>
+          </div>
+          <div>
+            <% if (header && header.stream) { %>
+            <span class="label">Stream:</span> <span class="value"><%= header.stream %>&nbsp;&nbsp;</span>
+            <% } %> <% if (header && header.grade) { %>
+            <span class="label">Grade:</span> <span class="value"><%= header.grade %>&nbsp;&nbsp;</span>
+            <% } %>
+          </div>
+          <div>
+            <span class="label">Report Date:</span>
+            <span class="value"><%= new Date().toLocaleDateString() %>&nbsp;&nbsp;</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="double-line"></div>
+
+      <table class="result">
+        <colgroup>
+          <col style="width: <%= fixedWidths.index %>mm" />
+          <col style="width: <%= fixedWidths.admNo %>mm" />
+          <col style="width: <%= fixedWidths.name %>mm" />
+          <col style="width: <%= fixedWidths.stream %>mm" />
+          <% subjects.forEach(() => { %>
+          <col style="width: <%= fixedWidths.subject %>mm" />
+          <% }); %>
+          <col style="width: <%= fixedWidths.total %>mm" />
+          <col style="width: <%= fixedWidths.avg %>mm" />
+          <col style="width: <%= fixedWidths.pos %>mm" />
+        </colgroup>
+
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ADM NO</th>
+            <th>Name</th>
+            <th>Stream</th>
+            <% subjects.forEach(subject => { %>
+            <th><%= subject %></th>
+            <% }); %>
+            <th>Total</th>
+            <th>AVG</th>
+            <th>POS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.slice(0, firstPageRows).forEach((item, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= item.learner.adm_no %></td>
+            <td><%= item.learner.first_name %> <%= item.learner.last_name %> <%= item.learner.surname %></td>
+            <td><%= item.stream %></td>
+            <% subjects.forEach(subject => { %>
+            <td><%= item.assessments[subject] !== undefined ? item.assessments[subject] : '-' %></td>
+            <% }); %>
+            <td><%= item.totalScore %></td>
+            <td><%= item.averageScore %></td>
+            <td><%= item.rank %></td>
+          </tr>
+          <% }); %>
+          <!-- Summary Rows for First Page (if last page) -->
+          <% if (totalRows <= firstPageRows) { %>
+          <tr class="summary-row">
+            <td>-</td>
+            <td colspan="3">Learning Area Average</td>
+            <% subjects.forEach(subject => { %>
+            <td>
+              <%= learningAreaStats.find(stat => stat.learning_area === subject)?.averageScore !== undefined ?
+              learningAreaStats.find(stat => stat.learning_area === subject).averageScore : '-' %>
+            </td>
+            <% }); %>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr class="summary-row">
+            <td>-</td>
+            <td colspan="3">Learning Area Rank</td>
+            <% subjects.forEach(subject => { %>
+            <td>
+              <%= learningAreaStats.find(stat => stat.learning_area === subject)?.position !== undefined ?
+              learningAreaStats.find(stat => stat.learning_area === subject).position : '-' %>
+            </td>
+            <% }); %>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Subsequent Pages -->
+    <% for (let i = firstPageRows; i < totalRows; i += subsequentPageRows) { %>
+    <div class="page">
+      <div class="watermark"><%= school.name %></div>
+      <table class="result">
+        <colgroup>
+          <col style="width: <%= fixedWidths.index %>mm" />
+          <col style="width: <%= fixedWidths.admNo %>mm" />
+          <col style="width: <%= fixedWidths.name %>mm" />
+          <col style="width: <%= fixedWidths.stream %>mm" />
+          <% subjects.forEach(() => { %>
+          <col style="width: <%= fixedWidths.subject %>mm" />
+          <% }); %>
+          <col style="width: <%= fixedWidths.total %>mm" />
+          <col style="width: <%= fixedWidths.avg %>mm" />
+          <col style="width: <%= fixedWidths.pos %>mm" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ADM NO</th>
+            <th>Name</th>
+            <th>Stream</th>
+            <% subjects.forEach(subject => { %>
+            <th><%= subject %></th>
+            <% }); %>
+            <th>Total</th>
+            <th>AVG</th>
+            <th>POS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.slice(i, i + subsequentPageRows).forEach((item, index) => { %>
+          <tr>
+            <td><%= i + index + 1 %></td>
+            <td><%= item.learner.adm_no %></td>
+            <td><%= item.learner.first_name %> <%= item.learner.last_name %> <%= item.learner.surname %></td>
+            <td><%= item.stream %></td>
+            <% subjects.forEach(subject => { %>
+            <td><%= item.assessments[subject] !== undefined ? item.assessments[subject] : '-' %></td>
+            <% }); %>
+            <td><%= item.totalScore %></td>
+            <td><%= item.averageScore %></td>
+            <td><%= item.rank %></td>
+          </tr>
+          <% }); %>
+          <!-- Summary Rows for Last Page -->
+          <% if (i + subsequentPageRows >= totalRows) { %>
+          <tr class="summary-row">
+            <td>-</td>
+            <td colspan="3">Learning Area Average</td>
+            <% subjects.forEach(subject => { %>
+            <td>
+              <%= learningAreaStats.find(stat => stat.learning_area === subject)?.averageScore !== undefined ?
+              learningAreaStats.find(stat => stat.learning_area === subject).averageScore : '-' %>
+            </td>
+            <% }); %>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr class="summary-row">
+            <td>-</td>
+            <td colspan="3">Learning Area Rank</td>
+            <% subjects.forEach(subject => { %>
+            <td>
+              <%= learningAreaStats.find(stat => stat.learning_area === subject)?.position !== undefined ?
+              learningAreaStats.find(stat => stat.learning_area === subject).position : '-' %>
+            </td>
+            <% }); %>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    <% } %>
+  </body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Assessment Analysis Report</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        font-size: 12px;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .header img {
+        max-width: 100px;
+      }
+      .header h1 {
+        margin: 10px 0;
+        font-size: 18px;
+      }
+      .header p {
+        margin: 5px 0;
+        font-size: 14px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+      h2 {
+        font-size: 16px;
+        margin: 20px 0 10px;
+      }
+      .section {
+        margin-bottom: 30px;
+      }
+      .no-data {
+        color: #666;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <% if (logoDataUrl) { %>
+      <img src="<%= logoDataUrl %>" alt="School Logo" />
+      <% } %>
+      <h1><%= school.name || 'School' %></h1>
+      <h2>Summative Assessment Analysis Report</h2>
+      <p>
+        <% if (header.grade) { %> <%= header.grade %><% } %> <% if (header.stream) { %>, Stream: <%= header.stream %><%
+        } %>
+      </p>
+      <p>TERM: <%= term || 'N/A' %>, TEST: <%= test || 'N/A' %></p>
+    </div>
+
+    <% if (isMultiStream) { %>
+    <!-- Multi-Stream Analysis -->
+    <div class="section">
+      <h2>Stream Ranking</h2>
+      <% if (data.streamRankings && data.streamRankings.length) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Stream</th>
+            <th>Mean Score</th>
+            <th>Learner Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.streamRankings.forEach(ranking => { %>
+          <tr>
+            <td><%= ranking.rank %></td>
+            <td><%= ranking.stream %></td>
+            <td><%= ranking.meanScore %></td>
+            <td><%= ranking.learnerCount %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <% } else { %>
+      <p class="no-data">No stream ranking available.</p>
+      <% } %>
+    </div>
+
+    <div class="section">
+      <h2>Best Learners per Learning Area</h2>
+      <% if (data.bestLearners && data.bestLearners.length) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Learning Area</th>
+            <th>Learner</th>
+            <th>Score</th>
+            <th>Stream</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.bestLearners.forEach(learner => { %>
+          <tr>
+            <td><%= learner.learningArea %></td>
+            <td><%= learner.learner.first_name %> <%= learner.learner.surname %></td>
+            <td><%= learner.score %></td>
+            <td><%= learner.stream %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <% } else { %>
+      <p class="no-data">No best learners data available.</p>
+      <% } %>
+    </div>
+    <% } else { %>
+    <!-- Single-Stream Analysis -->
+    <div class="section">
+      <h2>Performance Analysis for <%= header.stream || 'Stream' %></h2>
+      <% if (data && data.length) { %> <% data.forEach(area => { %>
+      <div class="section">
+        <h3><%= area.learning_area %></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Score</th>
+              <th>Description</th>
+              <th>Mark</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% area.analysis.forEach(analysis => { %>
+            <tr>
+              <td><%= analysis.score %></td>
+              <td><%= analysis.description || 'N/A' %></td>
+              <td><%= analysis.mark %></td>
+              <td><%= analysis.count %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+      <% }) %> <% } else { %>
+      <p class="no-data">No performance data available for this stream.</p>
+      <% } %>
+    </div>
+    <% } %>
+  </body>
+</html>

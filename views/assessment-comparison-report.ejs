@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Assessment Comparison Report for ${school.name}">
+    <meta name="author" content="${school.name}">
+    <title>Assessment Comparison - ${school.name}</title>
+    <style>
+        :root {
+            --primary-color: ${school.primaryColor || '#ff3333'};
+            --secondary-color: ${school.secondaryColor || '#33cc33'};
+            --accent1: #0066ff;
+            --accent2: #ffcc00;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: #ffffff;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            font-size: 1em;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5em;
+            color: rgba(0, 0, 0, 0.1);
+            z-index: -1;
+        }
+
+        .page {
+            width: 90%;
+            margin: 40px auto;
+            background: white;
+            border: 5px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .letterhead {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 10px 10px 0 0;
+            border-bottom: 3px dashed var(--secondary-color);
+            max-height: 150px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .letterhead img {
+            width: 120px;
+            height: auto;
+            background: white;
+            padding: 2px;
+            border-radius: 10px;
+            margin-left: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .school-info {
+            text-align: center;
+            margin-left: 10px;
+            flex-grow: 1;
+        }
+
+        .school-info h1 {
+            margin: 0;
+            font-size: 1.8em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .school-info p {
+            margin: 5px 0;
+            font-size: 1em;
+        }
+
+        .report-title {
+            text-align: center;
+            margin: 20px 0;
+            color: var(--primary-color);
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .learner-info {
+            background: var(--secondary-color);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            color: white;
+        }
+
+        .learner-info table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .learner-info td {
+            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .learner-info td:first-child {
+            font-weight: bold;
+            width: 30%;
+        }
+
+        .assessment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .assessment-table th {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .assessment-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .assessment-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .comments {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid var(--accent1);
+        }
+
+        .comments div:first-child {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .signature {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 300px;
+            margin: auto;
+        }
+
+        .signature img {
+            width: 80px;
+            height: 80px;
+            margin: 0 10px;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+        }
+
+        .signature-label {
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-top: 10px;
+        }
+
+        .motto {
+            text-align: center;
+            font-style: italic;
+            margin-top: 20px;
+            color: var(--accent2);
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="watermark">${school.name}</div>
+        
+        <div class="letterhead">
+            <div class="school-info">
+                <h1>${school.name}</h1>
+                <p>Assessment Comparison Report</p>
+                <p>Term ${term} - ${session}</p>
+            </div>
+        </div>
+
+        <div class="report-title">Assessment Comparison Report</div>
+
+        <div class="learner-info">
+            <table>
+                <tr>
+                    <td>Learner Name:</td>
+                    <td>${learner_data.first_name} ${learner_data.last_name}</td>
+                    <td>Admission No:</td>
+                    <td>${learner_data.admission_number}</td>
+                </tr>
+                <tr>
+                    <td>Stream:</td>
+                    <td>${learner_data.stream.name}</td>
+                    <td>Grade:</td>
+                    <td>${learner_data.grade.name}</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Assessment data will be inserted here by the controller -->
+        <div class="assessment-data">
+            <!-- This will be populated with the actual assessment data -->
+        </div>
+
+        <div class="comments">
+            <div><b>Class Manager's Report:</b></div>
+            <p>${teacher_comment?.comment || ''}</p>
+        </div>
+
+        <div class="signature-section">
+            <div class="signature">
+                <img src="${schoolStampDataUrl}" alt="School Stamp">
+                <img src="${signatorySignatureUrl}" alt="Signature">
+                <div class="signature-label">${signatoryRole}: ${signatoryName}</div>
+            </div>
+        </div>
+
+        <div class="motto">
+            ${school.school_motto || 'Empowering Learners for a Brighter Future'}
+        </div>
+    </div>
+</body>
+</html> 

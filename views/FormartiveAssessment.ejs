@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sample HTML Table</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: 100;
+        font-size: 7px;
+        -webkit-print-color-adjust: exact;
+        box-sizing: border-box;
+      }
+
+      .page {
+        position: relative;
+        display: block;
+        background: white;
+        page-break-after: auto;
+        margin: 50px;
+        overflow: hidden;
+      }
+
+      @media print {
+        body {
+          background: white;
+        }
+
+        .page {
+          margin: 0;
+          height: 100%;
+          width: 100%;
+        }
+      }
+
+      .page.first {
+        border-left: 5px solid green;
+      }
+
+      .bottom {
+        position: absolute;
+        left: 5mm;
+        right: 5mm;
+        bottom: 5mm;
+      }
+
+      .group {
+        margin-top: 3mm;
+      }
+
+      .line {
+        color: white;
+        position: relative;
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      .logo {
+        position: relative;
+        width: 80%;
+        left: 10%;
+        top: 15%;
+      }
+
+      table {
+        font-family: 'Times New Roman', Times, serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td,
+      th {
+        text-align: left;
+
+      }
+
+      .result td,
+      .result th {
+        border: 1px solid black;
+        text-align: left;
+        padding: 8px;
+        vertical-align: baseline;
+
+      }
+
+      .result tr:nth-child(even) {
+        background-color: #f7f5f5;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        justify-content: space-between;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 20px;
+      }
+
+      .image-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      table img {
+        width: 58px;
+        height: 58px;
+        margin-bottom: 8px;
+        border-radius: 5px;
+        /* -webkit-box-reflect: below 0px linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)); */
+        border: 1px solid blue;
+      }
+
+      .info {
+        font-size: 10px;
+      }
+
+      .topic {
+        margin-top: 8px;
+      }
+
+      .topic img {
+        width: 256px;
+        height: 96px;
+        margin-bottom: 8px;
+      }
+
+      .double-line {
+        border: 0;
+        height: 0;
+        position: relative;
+        margin: 2px 0;
+      }
+
+      .double-line::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        border-top: 2px solid green;
+      }
+
+      .double-line::after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 0;
+        width: 100%;
+        border-top: 1px solid red;
+      }
+
+      .info {
+        font-family: 'Times New Roman', Times, serif;
+        line-height: 2.5;
+        margin: 0;
+      }
+
+      .info .label {
+        font-family: 'Times New Roman', Times, serif;
+        text-transform: uppercase;
+      }
+
+      .info .value {
+        text-decoration: underline;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
+      .info div {
+        margin-bottom: 0;
+      }
+
+      .letterhead {
+        text-align: center;
+        font-size: 15px;
+        text-transform: uppercase;
+        margin: 0;
+      }
+
+      .letterhead img {
+        max-width: 100%;
+        max-height: 70px;
+        width: auto;
+        height: auto;
+        display: block;
+        margin: 0 auto 10px;
+      }
+
+      .letterhead .school-name {
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 18px;
+      }
+
+      .letterhead .address {
+        text-transform: uppercase;
+        font-size: 8px;
+      }
+
+      td {
+        position: relative;
+      }
+
+      td::after {
+        content: '';
+        position: absolute;
+        right: -1px;
+        top: 0;
+        height: 100%;
+        width: 1px;
+        background-color: #000;
+      }
+
+      tr {
+        page-break-inside: avoid;
+      }
+
+      
+      td {
+        page-break-inside: avoid;
+      }
+      @media print {
+            tr {
+                page-break-inside: avoid; /* Prevent page break inside a row */
+            }
+        }
+    </style>
+  </head>
+  <body>
+    <div class="letterhead">
+      <img src="<%= logoDataUrl %>" alt="School Logo" />
+      <div class="school-name"><%= school.name %> </div>
+      <div class="address">
+        <i><%= school.address %></i>
+      </div>
+    </div>
+    <hr class="double-line" />
+    <div style="margin-top: 5px; text-align: center; font-size: 15px">
+      <b><%= learner.first_name.toUpperCase() %> <%= learner.last_name.toUpperCase() %>'S FORMATIVE ASSESSMENT REPORT FOR Term <%= term %>, <%= session %></b>
+    </div>
+
+    <table border="0" cellpadding="10">
+      <tr>
+        <th>
+          <img src="<%= imageDataUrl %>" alt="Learner" />
+          <img src="<%= herologoDataUrl %>" style="display: none" alt="Learner" />
+        </th>
+        <th colspan="1">
+          <div class="info">
+            <div>
+              <span class="label">ADM NO:</span>
+              <span class="value"><%= learner.adm_no %></span>
+              <span class="label">CLASS:</span>
+              <span class="value"><%= learner.stream.grade.name.toUpperCase() %> <%= learner.stream.name.toUpperCase() %></span>
+            </div>
+            <div>
+              <span class="label">NAME:</span>
+              <span class="value"
+                ><%= learner.first_name %> <%= learner.last_name %> <%= learner.surname
+                %></span
+              >
+            </div>
+            <div>
+              <span class="label">LEARNING AREA:</span>
+              <span class="value"
+                ><%- learning_area %></span
+              >
+            </div>
+        
+            <% if (type === 'learner-weakness') { %>
+              <div>
+                <span class="label" style="color: rgb(197, 45, 45);font-size: larger;"><%= learner.first_name %> <%= learner.last_name %> AREAS OF IMPROVEMENT REPORT</span> 
+              </div>
+            <% } %>
+            
+          </div>
+        </th>
+      </tr>
+    </table>
+    <div class="page">
+        <table border='0' class='result' cellpadding='10'>
+            <tr>
+                <th style="font-size: 1.2em; font-weight: bold; text-align: center; width: 100px;">Strand</th>
+                <th style="font-size: 1.2em; font-weight: bold; text-align: center; width: 50px;">Substrand</th>
+                <th style="font-size: 1.2em; font-weight: bold; text-align: center; width: 200px;">Assessment Indicator</th>
+                <th style="font-size: 1.2em; font-weight: bold; text-align: center; width: 100px;">Learner's Outcome</th>
+            </tr>
+            
+
+            <% 
+            let previousStrandId = null; 
+            let previousSubstrandId = null; 
+
+            assessments.forEach((assessment) => { 
+                let strandCell = ''; 
+                let substrandCell = ''; 
+
+                if (!previousStrandId || !assessment.strand._id.equals(previousStrandId)) { 
+                    strandCell = `<td rowspan="${assessments.filter(a => a.strand._id.equals(assessment.strand._id)).length}">${assessment.strand.name}</td>`; 
+                    previousStrandId = assessment.strand._id; 
+                    previousSubstrandId = null; // Reset substrand tracking for new strand 
+                } 
+
+                if (!previousSubstrandId || !assessment.substrand._id.equals(previousSubstrandId)) { 
+                    substrandCell = `<td rowspan="${assessments.filter(a => a.substrand._id.equals(assessment.substrand._id)).length}">${assessment.substrand.name}</td>`
+                    previousSubstrandId = assessment.substrand._id; 
+                } 
+            %>
+                <tr > 
+                    <%- strandCell %>
+                    <%- substrandCell %>
+                    <td><%- assessment.indicator_description %></td>
+                    <td>
+                      <div>
+                        <b 
+                          style="color: <%= assessment.score === 4 ? '#4CAF50' : 
+                                         assessment.score === 3 ? '#2196F3' : 
+                                         assessment.score === 2 ? '#FFC107' : 
+                                         '#F44336' %>;">
+                          <%= rank(assessment.score) %>(<%= assessment.score %>)
+                        </b>: 
+                        <%= learner.first_name %> 
+                        <%- assessment.description ? (assessment.description.charAt(0).toLowerCase() + assessment.description.slice(1)) : '' %>
+                      </div>
+                      <div><b>Method of Assessment:</b> <%= assessment.method || 'N/A' %></div>
+                      <% if (assessment.uploadUrl) { %>
+                        <div><b>Attachment: </b><%=url %><%= assessment.uploadUrl %> </div>
+                      <% } %>
+                    </td>
+                    
+                    
+                    
+                                    </tr>
+            <% }); %>
+        </table>
+    </div>
+    </div>
+  </body>
+</html>
