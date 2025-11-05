@@ -330,7 +330,7 @@ router.get('/assessment/report', async (req, res) => {
         ? `data:image/png;base64,${fs.readFileSync(school.logo).toString('base64')}`
         : '';
 
-    let herologoDataUrl = fs.existsSync('logo.png')
+    let elimuriselogoDataUrl = fs.existsSync('logo.png')
       ? `data:image/png;base64,${fs.readFileSync('logo.png').toString('base64')}`
       : '';
 
@@ -353,7 +353,7 @@ router.get('/assessment/report', async (req, res) => {
       term,
       assessments,
       imageDataUrl,
-      herologoDataUrl,
+      elimuriselogoDataUrl,
       rank,
       rowspans,
       result,
@@ -374,7 +374,7 @@ router.get('/assessment/report', async (req, res) => {
       format: 'A4',
       border: {top: '0.3in', right: '0.5in', bottom: '0.5in', left: '0.5in'},
       footer: {
-        contents: `<hr style="border:2px solid black"><div><img src="${herologoDataUrl}" alt="Learner" style="width:50px; border-radius: 5px;">Powered By Elimurise.</div><div style="margin-top:10px;color: #444;text-align:center">{{page}}/<span>{{pages}}</div>`,
+        contents: `<hr style="border:2px solid black"><div><img src="${elimuriselogoDataUrl}" alt="Learner" style="width:50px; border-radius: 5px;">Powered By Elimurise.</div><div style="margin-top:10px;color: #444;text-align:center">{{page}}/<span>{{pages}}</div>`,
       },
       childProcessOptions: {env: {OPENSSL_CONF: '/dev/null'}},
     };
@@ -464,16 +464,16 @@ router.get('/assessment/report', async (req, res) => {
 //     }
 //     let logoDataUrl = '';
 //     let school = req?.user?.school;
-//     let herologoDataUrl = '';
-//     const herologo = 'logo.png';
-//     var _basePath = herologo;
+//     let elimuriselogoDataUrl = '';
+//     const elimuriselogo = 'logo.png';
+//     var _basePath = elimuriselogo;
 
 //     if (_basePath && fs.existsSync(_basePath)) {
 //       try {
 //         const imageBuffer = fs.readFileSync(_basePath);
 //         const base64Image = imageBuffer.toString('base64');
 //         const imageType = 'image/png'; // Adjust based on your image type (e.g., image/jpeg)
-//         herologoDataUrl = `data:${imageType};base64,${base64Image}`;
+//         elimuriselogoDataUrl = `data:${imageType};base64,${base64Image}`;
 //       } catch (error) {
 //         console.error('Error reading or encoding image file:', error);
 //       }
@@ -509,7 +509,7 @@ router.get('/assessment/report', async (req, res) => {
 //       term,
 //       assessments,
 //       imageDataUrl,
-//       herologoDataUrl,
+//       elimuriselogoDataUrl,
 //       rank,
 //       rowspans,
 //       result,
@@ -536,7 +536,7 @@ router.get('/assessment/report', async (req, res) => {
 //         left: '0.5in',
 //       },
 //       footer: {
-//         contents: `  <hr style="border:2px solid black"><div id="pageHeader"><img src="${herologoDataUrl}"  alt="Learner"
+//         contents: `  <hr style="border:2px solid black"><div id="pageHeader"><img src="${elimuriselogoDataUrl}"  alt="Learner"
 //      style="width:50px;
 //             border-radius: 5px;
 //            ">Powered By Elimurise. </div>
@@ -609,15 +609,15 @@ router.get('/assessments-comparison', async (req, res) => {
       logger.warn('School logo not found:', school.logo);
     }
 
-    // Load hero logo
-    let herologoDataUrl = '';
-    const herologo = 'logo.png';
-    if (fs.existsSync(herologo)) {
-      const imageBuffer = fs.readFileSync(herologo);
+    // Load elimurise logo
+    let elimuriselogoDataUrl = '';
+    const elimuriselogo = 'logo.png';
+    if (fs.existsSync(elimuriselogo)) {
+      const imageBuffer = fs.readFileSync(elimuriselogo);
       const base64Image = imageBuffer.toString('base64');
-      herologoDataUrl = `data:image/png;base64,${base64Image}`;
+      elimuriselogoDataUrl = `data:image/png;base64,${base64Image}`;
     } else {
-      logger.warn('Elimurise logo not found:', herologo);
+      logger.warn('Elimurise logo not found:', elimuriselogo);
     }
 
     // Load school stamp and headteacher signature
@@ -1176,7 +1176,7 @@ body {
       },
       footer: {
         height: '15mm' /* Reduced height for footer */,
-        contents: `<hr style="border:1px solid black; margin: 0;"><div style="display: flex; align-items: center; justify-content: center; padding: 2px 0;"><img src="${herologoDataUrl}" alt="Elimurise Logo" style="width:30px; border-radius:3px; margin-right: 5px;">Powered By Elimurise. <span style="margin-left: 10px; color:#444;">{{page}}/{{pages}}</span></div>`,
+        contents: `<hr style="border:1px solid black; margin: 0;"><div style="display: flex; align-items: center; justify-content: center; padding: 2px 0;"><img src="${elimuriselogoDataUrl}" alt="Elimurise Logo" style="width:30px; border-radius:3px; margin-right: 5px;">Powered By Elimurise. <span style="margin-left: 10px; color:#444;">{{page}}/{{pages}}</span></div>`,
       },
       childProcessOptions: {
         env: {
@@ -1310,7 +1310,7 @@ router.post('/pay', async (req, res) => {
       // Number(billing?.totalCost),
       '67b34af6-d23d-4cd8-a453-de1e1f1fcbaw',
       'Card Online Payment',
-      'https://hero.techsavanna.technology/api/payments/approve-transfer',
+      'https://elimurise.techsavanna.technology/api/payments/approve-transfer',
       billingAddress,
     );
     try {
@@ -1388,16 +1388,16 @@ router.get('/summative', async (req, res) => {
     // }
     let logoDataUrl = '';
     // let school = req?.user?.school;
-    let herologoDataUrl = '';
-    const herologo = 'logo.png';
-    var _basePath = herologo;
+    let elimuriselogoDataUrl = '';
+    const elimuriselogo = 'logo.png';
+    var _basePath = elimuriselogo;
 
     if (_basePath && fs.existsSync(_basePath)) {
       try {
         const imageBuffer = fs.readFileSync(_basePath);
         const base64Image = imageBuffer.toString('base64');
         const imageType = 'image/png'; // Adjust based on your image type (e.g., image/jpeg)
-        herologoDataUrl = `data:${imageType};base64,${base64Image}`;
+        elimuriselogoDataUrl = `data:${imageType};base64,${base64Image}`;
       } catch (error) {
         logger.error('Error reading or encoding image file:', error);
       }
@@ -1850,14 +1850,14 @@ body {
       return res.status(404).send('HTML content is required');
     }
 
-    // if (herologo && fs.existsSync(herologo)) {
+    // if (elimuriselogo && fs.existsSync(elimuriselogo)) {
     //   try {
-    //     const imageBuffer = fs.readFileSync(herologo);
+    //     const imageBuffer = fs.readFileSync(elimuriselogo);
     //     const base64Image = imageBuffer.toString('base64');
 
     //     const imageType = 'image/png'; // Adjust based on your image type (e.g., image/jpeg)
-    //     herologoDataUrl = `data:${imageType};base64,${base64Image}`;
-    //     logger.warn(`<img src="${herologoDataUrl}"  alt="Learner"
+    //     elimuriselogoDataUrl = `data:${imageType};base64,${base64Image}`;
+    //     logger.warn(`<img src="${elimuriselogoDataUrl}"  alt="Learner"
     //  style="width:100px;
     //  height:100;
     //         border-radius: 5px;

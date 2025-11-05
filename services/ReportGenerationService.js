@@ -18,7 +18,7 @@ class ReportGenerationService {
       signatorySignatureUrl,
       signatoryRole,
       signatoryName,
-      herologoDataUrl
+      elimuriselogoDataUrl
     } = data;
 
     // Read the HTML template
@@ -50,7 +50,7 @@ class ReportGenerationService {
       .replace(/\${signatorySignatureUrl}/g, signatorySignatureUrl || '')
       .replace(/\${signatoryRole}/g, signatoryRole || 'Head Teacher')
       .replace(/\${signatoryName}/g, signatoryName || '')
-      .replace(/\${herologoDataUrl}/g, herologoDataUrl || '');
+      .replace(/\${elimuriselogoDataUrl}/g, elimuriselogoDataUrl || '');
 
     return html;
   }

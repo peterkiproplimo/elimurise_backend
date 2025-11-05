@@ -172,7 +172,7 @@ class SubscriptionService {
       //   console.log(erpInvoiceData);
       // Make the API request to create the sales invoice in ERPNext
       const response = await axios.post(
-        `${process.env.ERPURL}api/method/hero.hero.apis.sales_invoice.create_sales_invoice`,
+        `${process.env.ERPURL}api/method/elimurise.elimurise.apis.sales_invoice.create_sales_invoice`,
         erpInvoiceData,
         {
           headers: {

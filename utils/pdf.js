@@ -3,7 +3,7 @@ const pdf = require('html-pdf');
 const path = require('path');
 const {formatCurrency} = require('./helper');
 
-let imageFilePath = path.resolve('img', 'hero.png');
+let imageFilePath = path.resolve('img', 'elimurise.png');
 
 exports.generatePdf = (res, subscription) => {
   let imageDataUrl = '';
@@ -21,16 +21,16 @@ exports.generatePdf = (res, subscription) => {
   } else {
     console.warn('Image file path is invalid or file does not exist:', imageFilePath);
   }
-  let herologoDataUrl = '';
-  const herologo = 'logo.png';
-  var _basePath = herologo;
+  let elimuriselogoDataUrl = '';
+  const elimuriselogo = 'logo.png';
+  var _basePath = elimuriselogo;
 
   if (_basePath && fs.existsSync(_basePath)) {
     try {
       const imageBuffer = fs.readFileSync(_basePath);
       const base64Image = imageBuffer.toString('base64');
       const imageType = 'image/png'; // Adjust based on your image type (e.g., image/jpeg)
-      herologoDataUrl = `data:${imageType};base64,${base64Image}`;
+      elimuriselogoDataUrl = `data:${imageType};base64,${base64Image}`;
     } catch (error) {
       console.error('Error reading or encoding image file:', error);
     }
@@ -46,7 +46,7 @@ exports.generatePdf = (res, subscription) => {
       left: '0.5in',
     },
     // footer: {
-    //   contents: `  <hr style="border:2px solid black"><div id="pageHeader"><img src="${herologoDataUrl}"  alt="Learner"
+    //   contents: `  <hr style="border:2px solid black"><div id="pageHeader"><img src="${elimuriselogoDataUrl}"  alt="Learner"
     //    style="width:50px;
     //           border-radius: 5px;
     //          ">Powered By Elimurise. </div>
@@ -153,7 +153,7 @@ exports.generatePdf = (res, subscription) => {
     <!-- Company and Invoice Details -->
     <div class="company-details">
       <div class="details">
-        <h3>HERO Learning</h3>
+        <h3>elimurise Learning</h3>
         <p>123 2453 Nairobi</p>
         <p> Kenya</p>
 

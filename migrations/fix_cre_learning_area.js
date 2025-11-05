@@ -83,7 +83,7 @@ async function fixSpecificLearningAreas() {
 // Run migration if this file is executed directly
 if (require.main === module) {
   // Connect to MongoDB
-  const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/hero_backend';
+  const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/elimurise_backend';
   
   mongoose.connect(mongoUri)
     .then(() => {

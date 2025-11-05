@@ -6450,7 +6450,7 @@ class SummativeAssessmentService {
       const imageDataUrl = <span class="cstat-no" title="statement not covered" >loadImageToBase64(learner_data.photo);</span>
       const school = <span class="cstat-no" title="statement not covered" >user?.school || {};</span>
       const logoDataUrl = <span class="cstat-no" title="statement not covered" >loadImageToBase64(school.logo);</span>
-      const herologoDataUrl = <span class="cstat-no" title="statement not covered" >loadImageToBase64('logo.png');</span>
+      const elimuriselogoDataUrl = <span class="cstat-no" title="statement not covered" >loadImageToBase64('logo.png');</span>
       const schoolStampDataUrl = <span class="cstat-no" title="statement not covered" >loadImageToBase64(school.school_stamp);</span>
       const headteacherSignatureDataUrl = <span class="cstat-no" title="statement not covered" >loadImageToBase64(school.signatory_signature);</span>
 &nbsp;
@@ -6512,7 +6512,7 @@ class SummativeAssessmentService {
         },
         footer: {
           height: '15mm',
-          contents: `&lt;hr style="border:1px solid black; margin: 0;"&gt;&lt;div style="display: flex; align-items: center; justify-content: center; padding: 2px 0;"&gt;&lt;img src="${herologoDataUrl}" alt="Elimurise Logo" style="width:30px; border-radius:3px; margin-right: 5px;"&gt;Powered By Elimurise. &lt;span style="margin-left: 10px; color:#444;"&gt;{{page}}/{{pages}}&lt;/span&gt;&lt;/div&gt;`,
+          contents: `&lt;hr style="border:1px solid black; margin: 0;"&gt;&lt;div style="display: flex; align-items: center; justify-content: center; padding: 2px 0;"&gt;&lt;img src="${elimuriselogoDataUrl}" alt="Elimurise Logo" style="width:30px; border-radius:3px; margin-right: 5px;"&gt;Powered By Elimurise. &lt;span style="margin-left: 10px; color:#444;"&gt;{{page}}/{{pages}}&lt;/span&gt;&lt;/div&gt;`,
         },
         childProcessOptions: {
           env: {OPENSSL_CONF: '/dev/null'},

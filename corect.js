@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Substrand = require('./models/cms/content/substrand'); // Update the path accordingly
 
 // async function migrateIndicators() {
-//   await mongoose.connect('mongodb://localhost:27017/hero_backend', {useNewUrlParser: true, useUnifiedTopology: true});
+//   await mongoose.connect('mongodb://localhost:27017/elimurise_backend', {useNewUrlParser: true, useUnifiedTopology: true});
 
 //   const session = await mongoose.startSession();
 //   session.startTransaction();

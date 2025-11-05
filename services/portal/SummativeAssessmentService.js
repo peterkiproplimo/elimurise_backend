@@ -1799,7 +1799,7 @@ class SummativeAssessmentService {
       const imageDataUrl = loadImageToBase64(learner_data.photo);
       const school = user?.school || {};
       const logoDataUrl = loadImageToBase64(school.logo);
-      const herologoDataUrl = loadImageToBase64('logo.png');
+      const elimuriselogoDataUrl = loadImageToBase64('logo.png');
       const schoolStampDataUrl = loadImageToBase64(school.school_stamp);
       const headteacherSignatureDataUrl = loadImageToBase64(school.signatory_signature);
 
@@ -1861,7 +1861,7 @@ class SummativeAssessmentService {
         },
         footer: {
           height: '15mm',
-          contents: `<hr style="border:1px solid black; margin: 0;"><div style="display: flex; align-items: center; justify-content: center; padding: 2px 0;"><img src="${herologoDataUrl}" alt="Elimurise Logo" style="width:30px; border-radius:3px; margin-right: 5px;">Powered By Elimurise. <span style="margin-left: 10px; color:#444;">{{page}}/{{pages}}</span></div>`,
+          contents: `<hr style="border:1px solid black; margin: 0;"><div style="display: flex; align-items: center; justify-content: center; padding: 2px 0;"><img src="${elimuriselogoDataUrl}" alt="Elimurise Logo" style="width:30px; border-radius:3px; margin-right: 5px;">Powered By Elimurise. <span style="margin-left: 10px; color:#444;">{{page}}/{{pages}}</span></div>`,
         },
         childProcessOptions: {
           env: {OPENSSL_CONF: '/dev/null'},

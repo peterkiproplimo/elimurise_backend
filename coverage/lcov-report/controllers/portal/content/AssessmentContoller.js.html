@@ -2089,7 +2089,7 @@ const multer = <span class="cstat-no" title="statement not covered" >require('mu
 // Configure multer storage
 const storage = <span class="cstat-no" title="statement not covered" >multer.diskStorage({</span>
   destination: <span class="fstat-no" title="function not covered" >fu</span>nction (req, file, cb) {
-    const uploadDir = <span class="cstat-no" title="statement not covered" >'/hero/assessments/';</span>
+    const uploadDir = <span class="cstat-no" title="statement not covered" >'/elimurise/assessments/';</span>
 <span class="cstat-no" title="statement not covered" >    if (!fs.existsSync(uploadDir)) {</span>
 <span class="cstat-no" title="statement not covered" >      fs.mkdirSync(uploadDir, {recursive: true});</span>
     }
@@ -2254,7 +2254,7 @@ const handleValidationErrors = <span class="cstat-no" title="statement not cover
       let uploadUrl = <span class="cstat-no" title="statement not covered" >existingAssessment?.uploadUrl || null;</span>
 <span class="cstat-no" title="statement not covered" >      if (req.file) {</span>
         const baseUrl = <span class="cstat-no" title="statement not covered" >'';</span>
-<span class="cstat-no" title="statement not covered" >        uploadUrl = `${baseUrl}/hero/assessments/${req.file.filename}`;</span>
+<span class="cstat-no" title="statement not covered" >        uploadUrl = `${baseUrl}/elimurise/assessments/${req.file.filename}`;</span>
       }
 &nbsp;
       // Add or update the assessment
@@ -2694,7 +2694,7 @@ const calculateRowspans = <span class="cstat-no" title="statement not covered" >
         ? `data:image/png;base64,${fs.readFileSync(school.logo).toString('base64')}`
         : '';
 &nbsp;
-    let herologoDataUrl = <span class="cstat-no" title="statement not covered" >fs.existsSync('logo.png')</span>
+    let elimuriselogoDataUrl = <span class="cstat-no" title="statement not covered" >fs.existsSync('logo.png')</span>
       ? `data:image/png;base64,${fs.readFileSync('logo.png').toString('base64')}`
         : '';
 &nbsp;
@@ -2723,7 +2723,7 @@ const calculateRowspans = <span class="cstat-no" title="statement not covered" >
       term,
       assessments: validAssessments,
       imageDataUrl,
-      herologoDataUrl,
+      elimuriselogoDataUrl,
       rank: isSwahili ? rankSwahili : rank,
       rowspans,
       result,
@@ -2834,7 +2834,7 @@ const calculateRowspans = <span class="cstat-no" title="statement not covered" >
 <span class="cstat-no" title="statement not covered" >      school.logo &amp;&amp; fs.existsSync(school.logo)</span>
         ? `data:image/png;base64,${fs.readFileSync(school.logo).toString('base64')}`
         : '';
-    let herologoDataUrl = <span class="cstat-no" title="statement not covered" >fs.existsSync('logo.png')</span>
+    let elimuriselogoDataUrl = <span class="cstat-no" title="statement not covered" >fs.existsSync('logo.png')</span>
       ? `data:image/png;base64,${fs.readFileSync('logo.png').toString('base64')}`
       : '';
 &nbsp;
@@ -2919,7 +2919,7 @@ const calculateRowspans = <span class="cstat-no" title="statement not covered" >
     const html = <span class="cstat-no" title="statement not covered" >await new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      res.render(</span>
         'FormartiveAnalysis',
-        {data: assessments, herologoDataUrl, logoDataUrl, school, learningArea, header},
+        {data: assessments, elimuriselogoDataUrl, logoDataUrl, school, learningArea, header},
 <span class="fstat-no" title="function not covered" >        (e</span>rr, renderedHtml) =&gt; {
 <span class="cstat-no" title="statement not covered" >          if (err) <span class="cstat-no" title="statement not covered" >reject(err);</span></span>
 <span class="cstat-no" title="statement not covered" >          resolve(renderedHtml);</span>

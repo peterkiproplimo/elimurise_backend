@@ -4,7 +4,7 @@ const {BillingAddress, Payment, PesapalApiService} = require('../../../services/
 const easyinvoice = require('easyinvoice');
 const fs = require('fs');
 const path = require('path');
-let imgPath = path.resolve('img', 'hero.png');
+let imgPath = path.resolve('img', 'elimurise.png');
 
 const packageService = require('../../../services/cms/PackageService');
 const PackageService = new packageService();
@@ -187,7 +187,7 @@ router.post('/:id/pay', async (req, res) => {
     // Number(billing?.totalCost),
     '67b34af6-d23d-4cd8-a453-de1e1f1fcbaw',
     'Card Online Payment',
-    'https://hero.techsavanna.technology/api/payments/confirm',
+    'https://elimurise.techsavanna.technology/api/payments/confirm',
     billingAddress,
   );
   try {
@@ -233,7 +233,7 @@ router.post('/confirm-payment', async (req, res) => {
     Number(billing?.totalCost),
     '67b34af6-d23d-4cd8-a453-de1e1f1fcbab',
     'Card Online Payment',
-    'https://hero.techsavanna.technology/api/payments',
+    'https://elimurise.techsavanna.technology/api/payments',
     billingAddress,
   );
   try {

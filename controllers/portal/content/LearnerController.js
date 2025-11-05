@@ -121,7 +121,7 @@ router.get('/', checkPermission('learners', 'read'), async (req, res) => {
 // Multer setup for image uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '/hero/');
+    cb(null, '/elimurise/');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));

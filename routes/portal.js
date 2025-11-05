@@ -84,7 +84,7 @@ router.use('/level', auth, LevelController);
 router.use('/fee-items', auth, feeItemRoutes);
 router.use('/fee-structures', auth, feeStructureRoutes);
 
-router.use('/hero', express.static('/hero'));
+router.use('/elimurise', express.static('/elimurise'));
 router.get('/health', async (req, res) => {
   return res.status(200).json({status: 'up and running'});
 });

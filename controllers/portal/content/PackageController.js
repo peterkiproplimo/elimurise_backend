@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
-let imgPath = path.resolve('img', 'hero.png');
+let imgPath = path.resolve('img', 'elimurise.png');
 
 const packageService = require('../../../services/cms/PackageService');
 const PackageService = new packageService();

@@ -44,7 +44,7 @@ exports.generateThumbnail = async (inputPath, maxSizeKB = 50) => {
 };
 // async function generateReport() {
 //   // Generate thumbnail and get data URL
-//   const imageDataUrl = await generateThumbnail('/hero/1721946234779.jpg');
+//   const imageDataUrl = await generateThumbnail('/elimurise/1721946234779.jpg');
 //   console.log('Data URL:', imageDataUrl);
 // }
 // generateReport();

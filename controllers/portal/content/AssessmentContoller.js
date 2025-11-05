@@ -28,7 +28,7 @@ const multer = require('multer');
 // Configure multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadDir = '/hero/assessments/';
+    const uploadDir = '/elimurise/assessments/';
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, {recursive: true});
     }
@@ -193,7 +193,7 @@ router.post(
       let uploadUrl = existingAssessment?.uploadUrl || null;
       if (req.file) {
         const baseUrl = '';
-        uploadUrl = `${baseUrl}/hero/assessments/${req.file.filename}`;
+        uploadUrl = `${baseUrl}/elimurise/assessments/${req.file.filename}`;
       }
 
       // Add or update the assessment
@@ -633,7 +633,7 @@ router.get('/assessments', checkPermission('assessment', 'learners-report'), asy
         ? `data:image/png;base64,${fs.readFileSync(school.logo).toString('base64')}`
         : '';
 
-    let herologoDataUrl = fs.existsSync('logo.png')
+    let elimuriselogoDataUrl = fs.existsSync('logo.png')
       ? `data:image/png;base64,${fs.readFileSync('logo.png').toString('base64')}`
         : '';
 
@@ -662,7 +662,7 @@ router.get('/assessments', checkPermission('assessment', 'learners-report'), asy
       term,
       assessments: validAssessments,
       imageDataUrl,
-      herologoDataUrl,
+      elimuriselogoDataUrl,
       rank: isSwahili ? rankSwahili : rank,
       rowspans,
       result,
@@ -773,7 +773,7 @@ router.get('/assessments/analysis', checkPermission('assessment', 'analysis-repo
       school.logo && fs.existsSync(school.logo)
         ? `data:image/png;base64,${fs.readFileSync(school.logo).toString('base64')}`
         : '';
-    let herologoDataUrl = fs.existsSync('logo.png')
+    let elimuriselogoDataUrl = fs.existsSync('logo.png')
       ? `data:image/png;base64,${fs.readFileSync('logo.png').toString('base64')}`
       : '';
 
@@ -858,7 +858,7 @@ router.get('/assessments/analysis', checkPermission('assessment', 'analysis-repo
     const html = await new Promise((resolve, reject) => {
       res.render(
         'FormartiveAnalysis',
-        {data: assessments, herologoDataUrl, logoDataUrl, school, learningArea, header},
+        {data: assessments, elimuriselogoDataUrl, logoDataUrl, school, learningArea, header},
         (err, renderedHtml) => {
           if (err) reject(err);
           resolve(renderedHtml);

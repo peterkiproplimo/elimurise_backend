@@ -279,16 +279,16 @@ router.get('/assessments', checkPermission('tests', 'learners-report'), async (r
     // }
     let logoDataUrl = '';
     // let school = req?.user?.school;
-    let herologoDataUrl = '';
-    const herologo = 'logo.png';
-    var _basePath = herologo;
+    let elimuriselogoDataUrl = '';
+    const elimuriselogo = 'logo.png';
+    var _basePath = elimuriselogo;
 
     if (_basePath && fs.existsSync(_basePath)) {
       try {
         const imageBuffer = fs.readFileSync(_basePath);
         const base64Image = imageBuffer.toString('base64');
         const imageType = 'image/png'; // Adjust based on your image type (e.g., image/jpeg)
-        herologoDataUrl = `data:${imageType};base64,${base64Image}`;
+        elimuriselogoDataUrl = `data:${imageType};base64,${base64Image}`;
       } catch (error) {
         logger.error('Error reading or encoding image file:', error);
       }
@@ -738,14 +738,14 @@ body {
       return res.status(404).send('HTML content is required');
     }
 
-    // if (herologo && fs.existsSync(herologo)) {
+    // if (elimuriselogo && fs.existsSync(elimuriselogo)) {
     //   try {
-    //     const imageBuffer = fs.readFileSync(herologo);
+    //     const imageBuffer = fs.readFileSync(elimuriselogo);
     //     const base64Image = imageBuffer.toString('base64');
 
     //     const imageType = 'image/png'; // Adjust based on your image type (e.g., image/jpeg)
-    //     herologoDataUrl = `data:${imageType};base64,${base64Image}`;
-    //     logger.warn(`<img src="${herologoDataUrl}"  alt="Learner"
+    //     elimuriselogoDataUrl = `data:${imageType};base64,${base64Image}`;
+    //     logger.warn(`<img src="${elimuriselogoDataUrl}"  alt="Learner"
     //  style="width:100px;
     //  height:100;
     //         border-radius: 5px;
@@ -925,15 +925,15 @@ router.get('/assessments-comparison', checkPermission('tests', 'learners-report'
       logger.warn('School logo not found:', school.logo);
     }
 
-    // Load hero logo
-    let herologoDataUrl = '';
-    const herologo = 'logo.png';
-    if (fs.existsSync(herologo)) {
-      const imageBuffer = fs.readFileSync(herologo);
+    // Load elimurise logo
+    let elimuriselogoDataUrl = '';
+    const elimuriselogo = 'logo.png';
+    if (fs.existsSync(elimuriselogo)) {
+      const imageBuffer = fs.readFileSync(elimuriselogo);
       const base64Image = imageBuffer.toString('base64');
-      herologoDataUrl = `data:image/png;base64,${base64Image}`;
+      elimuriselogoDataUrl = `data:image/png;base64,${base64Image}`;
     } else {
-      logger.warn('Elimurise logo not found:', herologo);
+      logger.warn('Elimurise logo not found:', elimuriselogo);
     }
 
     // Load school stamp and headteacher signature
@@ -1638,7 +1638,7 @@ router.get('/assessments-comparison-all', checkPermission('tests', 'learners-rep
     const logoDataUrl = await getImageDataUrl(school.logo);
     const schoolStampDataUrl = await getImageDataUrl(school.school_stamp);
     const headteacherSignatureDataUrl = await getImageDataUrl(school.signatory_signature);
-    const herologoDataUrl = await getImageDataUrl('logo.png');
+    const elimuriselogoDataUrl = await getImageDataUrl('logo.png');
 
     const signatoryRole = school.signatory_role || 'Head Teacher';
     const signatoryName = school.signatory_name || '';
@@ -2148,16 +2148,16 @@ router.get('/assessments/all', checkPermission('tests', 'analysis-report'), asyn
     logger.warn(header);
     // Ensure the image file path is valid and exists
     let logoDataUrl = '';
-    let herologoDataUrl = '';
-    const herologo = 'logo.png';
-    var _basePath = herologo;
+    let elimuriselogoDataUrl = '';
+    const elimuriselogo = 'logo.png';
+    var _basePath = elimuriselogo;
 
     if (_basePath && fs.existsSync(_basePath)) {
       try {
         const imageBuffer = fs.readFileSync(_basePath);
         const base64Image = imageBuffer.toString('base64');
         const imageType = 'image/png'; // Adjust based on your image type (e.g., image/jpeg)
-        herologoDataUrl = `data:${imageType};base64,${base64Image}`;
+        elimuriselogoDataUrl = `data:${imageType};base64,${base64Image}`;
       } catch (error) {
         logger.error('Error reading or encoding image file:', error);
       }
@@ -2192,7 +2192,7 @@ router.get('/assessments/all', checkPermission('tests', 'analysis-report'), asyn
     const html = await new Promise((resolve, reject) => {
       app.render(
         'SummativeBroadsheet',
-        {school, logoDataUrl, data, subjects, header, herologoDataUrl, testData, term, learningAreaStats},
+        {school, logoDataUrl, data, subjects, header, elimuriselogoDataUrl, testData, term, learningAreaStats},
         (err, renderedHtml) => {
           if (err) reject(err);
           resolve(renderedHtml);
@@ -2226,19 +2226,19 @@ router.get('/assessments/analysis', checkPermission('tests', 'analysis-report'),
   const {term, test, stream, grade, type} = req.query;
   const query = {};
   let school = req?.user?.school;
-  let herologoDataUrl = '';
+  let elimuriselogoDataUrl = '';
   let imageDataUrl = '';
-  const herologo = 'logo.png';
+  const elimuriselogo = 'logo.png';
   const session = req.current_session;
   let logoDataUrl = '';
-  var _basePath = herologo;
+  var _basePath = elimuriselogo;
 
   if (_basePath && fs.existsSync(_basePath)) {
     try {
       const imageBuffer = fs.readFileSync(_basePath);
       const base64Image = imageBuffer.toString('base64');
       const imageType = 'image/png'; // Adjust based on your image type (e.g., image/jpeg)
-      herologoDataUrl = `data:${imageType};base64,${base64Image}`;
+      elimuriselogoDataUrl = `data:${imageType};base64,${base64Image}`;
     } catch (error) {
       logger.error('Error reading or encoding image file:', error);
     }
@@ -2276,7 +2276,7 @@ router.get('/assessments/analysis', checkPermission('tests', 'analysis-report'),
   const data = await summativeAssessment.analyzePerformance(grade, stream, term, test, school._id, session);
 
   const html = await new Promise((resolve, reject) => {
-    app.render('SummativeAnalysis', {school, logoDataUrl, data, header, herologoDataUrl}, (err, renderedHtml) => {
+    app.render('SummativeAnalysis', {school, logoDataUrl, data, header, elimuriselogoDataUrl}, (err, renderedHtml) => {
       if (err) reject(err);
       resolve(renderedHtml);
     });
@@ -2294,7 +2294,7 @@ router.get('/assessments/analysis', checkPermission('tests', 'analysis-report'),
       contents: `
         <hr style="border:2px solid black">
         <div id="pageHeader">
-          <img src="${herologoDataUrl}" alt="Learner" style="width:50px; border-radius: 5px;">
+          <img src="${elimuriselogoDataUrl}" alt="Learner" style="width:50px; border-radius: 5px;">
           Powered By Elimurise
         </div>
         <div style="margin-top:10px;color: #444;text-align:center">
@@ -2323,19 +2323,19 @@ router.get('/assessments/analysis-stream', checkPermission('tests', 'analysis-re
   const {term, test, stream, grade, type} = req.query;
   const query = {};
   let school = req?.user?.school;
-  let herologoDataUrl = '';
+  let elimuriselogoDataUrl = '';
   let imageDataUrl = '';
-  const herologo = 'logo.png';
+  const elimuriselogo = 'logo.png';
   const session = req.current_session;
   let logoDataUrl = '';
-  var _basePath = herologo;
+  var _basePath = elimuriselogo;
 
   if (_basePath && fs.existsSync(_basePath)) {
     try {
       const imageBuffer = fs.readFileSync(_basePath);
       const base64Image = imageBuffer.toString('base64');
       const imageType = 'image/png'; // Adjust based on your image type (e.g., image/jpeg)
-      herologoDataUrl = `data:${imageType};base64,${base64Image}`;
+      elimuriselogoDataUrl = `data:${imageType};base64,${base64Image}`;
     } catch (error) {
       logger.error('Error reading or encoding image file:', error);
     }
@@ -2376,7 +2376,7 @@ router.get('/assessments/analysis-stream', checkPermission('tests', 'analysis-re
   const html = await new Promise((resolve, reject) => {
     app.render(
       'SummativeStreamAnalysis',
-      {school, logoDataUrl, data, header, herologoDataUrl, term, test: testData.name, isMultiStream: true},
+      {school, logoDataUrl, data, header, elimuriselogoDataUrl, term, test: testData.name, isMultiStream: true},
       (err, renderedHtml) => {
         if (err) reject(err);
         resolve(renderedHtml);
@@ -2396,7 +2396,7 @@ router.get('/assessments/analysis-stream', checkPermission('tests', 'analysis-re
       contents: `
         <hr style="border:2px solid black">
         <div id="pageHeader">
-          <img src="${herologoDataUrl}" alt="Learner" style="width:50px; border-radius: 5px;">
+          <img src="${elimuriselogoDataUrl}" alt="Learner" style="width:50px; border-radius: 5px;">
           Powered By Elimurise
         </div>
         <div style="margin-top:10px;color: #444;text-align:center">

@@ -136,7 +136,7 @@ async function duplicateContent(sourceGradeId, targetGradeIds) {
 // Example usage
 async function main() {
   try {
-    await mongoose.connect('mongodb://10.0.0.136:27017/hero_backend');
+    await mongoose.connect('mongodb://10.0.0.136:27017/elimurise_backend');
 
     const sourceGradeId = '662f65bc91aeabd467119f26'; // Playgroup
     const targetGradeIds = [

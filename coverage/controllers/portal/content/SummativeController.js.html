@@ -5194,16 +5194,16 @@ async function <span class="fstat-no" title="function not covered" >makeImageTra
     // }
     let logoDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
     // let school = req?.user?.school;
-    let herologoDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
-    const herologo = <span class="cstat-no" title="statement not covered" >'logo.png';</span>
-    var _basePath = <span class="cstat-no" title="statement not covered" >herologo;</span>
+    let elimuriselogoDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
+    const elimuriselogo = <span class="cstat-no" title="statement not covered" >'logo.png';</span>
+    var _basePath = <span class="cstat-no" title="statement not covered" >elimuriselogo;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    if (_basePath &amp;&amp; fs.existsSync(_basePath)) {</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
         const imageBuffer = <span class="cstat-no" title="statement not covered" >fs.readFileSync(_basePath);</span>
         const base64Image = <span class="cstat-no" title="statement not covered" >imageBuffer.toString('base64');</span>
         const imageType = <span class="cstat-no" title="statement not covered" >'image/png';</span> // Adjust based on your image type (e.g., image/jpeg)
-<span class="cstat-no" title="statement not covered" >        herologoDataUrl = `data:${imageType};base64,${base64Image}`;</span>
+<span class="cstat-no" title="statement not covered" >        elimuriselogoDataUrl = `data:${imageType};base64,${base64Image}`;</span>
       } catch (error) {
 <span class="cstat-no" title="statement not covered" >        logger.error('Error reading or encoding image file:', error);</span>
       }
@@ -5653,14 +5653,14 @@ body {
 <span class="cstat-no" title="statement not covered" >      return res.status(404).send('HTML content is required');</span>
     }
 &nbsp;
-    // if (herologo &amp;&amp; fs.existsSync(herologo)) {
+    // if (elimuriselogo &amp;&amp; fs.existsSync(elimuriselogo)) {
     //   try {
-    //     const imageBuffer = fs.readFileSync(herologo);
+    //     const imageBuffer = fs.readFileSync(elimuriselogo);
     //     const base64Image = imageBuffer.toString('base64');
 &nbsp;
     //     const imageType = 'image/png'; // Adjust based on your image type (e.g., image/jpeg)
-    //     herologoDataUrl = `data:${imageType};base64,${base64Image}`;
-    //     logger.warn(`&lt;img src="${herologoDataUrl}"  alt="Learner"
+    //     elimuriselogoDataUrl = `data:${imageType};base64,${base64Image}`;
+    //     logger.warn(`&lt;img src="${elimuriselogoDataUrl}"  alt="Learner"
     //  style="width:100px;
     //  height:100;
     //         border-radius: 5px;
@@ -5840,15 +5840,15 @@ function <span class="fstat-no" title="function not covered" >generatePlaceholde
 <span class="cstat-no" title="statement not covered" >      logger.warn('School logo not found:', school.logo);</span>
     }
 &nbsp;
-    // Load hero logo
-    let herologoDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
-    const herologo = <span class="cstat-no" title="statement not covered" >'logo.png';</span>
-<span class="cstat-no" title="statement not covered" >    if (fs.existsSync(herologo)) {</span>
-      const imageBuffer = <span class="cstat-no" title="statement not covered" >fs.readFileSync(herologo);</span>
+    // Load elimurise logo
+    let elimuriselogoDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
+    const elimuriselogo = <span class="cstat-no" title="statement not covered" >'logo.png';</span>
+<span class="cstat-no" title="statement not covered" >    if (fs.existsSync(elimuriselogo)) {</span>
+      const imageBuffer = <span class="cstat-no" title="statement not covered" >fs.readFileSync(elimuriselogo);</span>
       const base64Image = <span class="cstat-no" title="statement not covered" >imageBuffer.toString('base64');</span>
-<span class="cstat-no" title="statement not covered" >      herologoDataUrl = `data:image/png;base64,${base64Image}`;</span>
+<span class="cstat-no" title="statement not covered" >      elimuriselogoDataUrl = `data:image/png;base64,${base64Image}`;</span>
     } else {
-<span class="cstat-no" title="statement not covered" >      logger.warn('Elimurise logo not found:', herologo);</span>
+<span class="cstat-no" title="statement not covered" >      logger.warn('Elimurise logo not found:', elimuriselogo);</span>
     }
 &nbsp;
     // Load school stamp and headteacher signature
@@ -6553,7 +6553,7 @@ async function <span class="fstat-no" title="function not covered" >getImageData
     const logoDataUrl = <span class="cstat-no" title="statement not covered" >await getImageDataUrl(school.logo);</span>
     const schoolStampDataUrl = <span class="cstat-no" title="statement not covered" >await getImageDataUrl(school.school_stamp);</span>
     const headteacherSignatureDataUrl = <span class="cstat-no" title="statement not covered" >await getImageDataUrl(school.signatory_signature);</span>
-    const herologoDataUrl = <span class="cstat-no" title="statement not covered" >await getImageDataUrl('logo.png');</span>
+    const elimuriselogoDataUrl = <span class="cstat-no" title="statement not covered" >await getImageDataUrl('logo.png');</span>
 &nbsp;
     const signatoryRole = <span class="cstat-no" title="statement not covered" >school.signatory_role || 'Head Teacher';</span>
     const signatoryName = <span class="cstat-no" title="statement not covered" >school.signatory_name || '';</span>
@@ -7063,16 +7063,16 @@ const rank = <span class="cstat-no" title="statement not covered" ><span class="
 <span class="cstat-no" title="statement not covered" >    logger.warn(header);</span>
     // Ensure the image file path is valid and exists
     let logoDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
-    let herologoDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
-    const herologo = <span class="cstat-no" title="statement not covered" >'logo.png';</span>
-    var _basePath = <span class="cstat-no" title="statement not covered" >herologo;</span>
+    let elimuriselogoDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
+    const elimuriselogo = <span class="cstat-no" title="statement not covered" >'logo.png';</span>
+    var _basePath = <span class="cstat-no" title="statement not covered" >elimuriselogo;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    if (_basePath &amp;&amp; fs.existsSync(_basePath)) {</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
         const imageBuffer = <span class="cstat-no" title="statement not covered" >fs.readFileSync(_basePath);</span>
         const base64Image = <span class="cstat-no" title="statement not covered" >imageBuffer.toString('base64');</span>
         const imageType = <span class="cstat-no" title="statement not covered" >'image/png';</span> // Adjust based on your image type (e.g., image/jpeg)
-<span class="cstat-no" title="statement not covered" >        herologoDataUrl = `data:${imageType};base64,${base64Image}`;</span>
+<span class="cstat-no" title="statement not covered" >        elimuriselogoDataUrl = `data:${imageType};base64,${base64Image}`;</span>
       } catch (error) {
 <span class="cstat-no" title="statement not covered" >        logger.error('Error reading or encoding image file:', error);</span>
       }
@@ -7107,7 +7107,7 @@ const rank = <span class="cstat-no" title="statement not covered" ><span class="
     const html = <span class="cstat-no" title="statement not covered" >await new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      app.render(</span>
         'SummativeBroadsheet',
-        {school, logoDataUrl, data, subjects, header, herologoDataUrl, testData, term, learningAreaStats},
+        {school, logoDataUrl, data, subjects, header, elimuriselogoDataUrl, testData, term, learningAreaStats},
 <span class="fstat-no" title="function not covered" >        (e</span>rr, renderedHtml) =&gt; {
 <span class="cstat-no" title="statement not covered" >          if (err) <span class="cstat-no" title="statement not covered" >reject(err);</span></span>
 <span class="cstat-no" title="statement not covered" >          resolve(renderedHtml);</span>
@@ -7141,19 +7141,19 @@ const rank = <span class="cstat-no" title="statement not covered" ><span class="
   const {term, test, stream, grade, type} = <span class="cstat-no" title="statement not covered" >req.query;</span>
   const query = <span class="cstat-no" title="statement not covered" >{};</span>
   let school = <span class="cstat-no" title="statement not covered" >req?.user?.school;</span>
-  let herologoDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
+  let elimuriselogoDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
   let imageDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
-  const herologo = <span class="cstat-no" title="statement not covered" >'logo.png';</span>
+  const elimuriselogo = <span class="cstat-no" title="statement not covered" >'logo.png';</span>
   const session = <span class="cstat-no" title="statement not covered" >req.current_session;</span>
   let logoDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
-  var _basePath = <span class="cstat-no" title="statement not covered" >herologo;</span>
+  var _basePath = <span class="cstat-no" title="statement not covered" >elimuriselogo;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (_basePath &amp;&amp; fs.existsSync(_basePath)) {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const imageBuffer = <span class="cstat-no" title="statement not covered" >fs.readFileSync(_basePath);</span>
       const base64Image = <span class="cstat-no" title="statement not covered" >imageBuffer.toString('base64');</span>
       const imageType = <span class="cstat-no" title="statement not covered" >'image/png';</span> // Adjust based on your image type (e.g., image/jpeg)
-<span class="cstat-no" title="statement not covered" >      herologoDataUrl = `data:${imageType};base64,${base64Image}`;</span>
+<span class="cstat-no" title="statement not covered" >      elimuriselogoDataUrl = `data:${imageType};base64,${base64Image}`;</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      logger.error('Error reading or encoding image file:', error);</span>
     }
@@ -7191,7 +7191,7 @@ const rank = <span class="cstat-no" title="statement not covered" ><span class="
   const data = <span class="cstat-no" title="statement not covered" >await summativeAssessment.analyzePerformance(grade, stream, term, test, school._id, session);</span>
 &nbsp;
   const html = <span class="cstat-no" title="statement not covered" >await new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    app.render('SummativeAnalysis', {school, logoDataUrl, data, header, herologoDataUrl}, <span class="fstat-no" title="function not covered" >(e</span>rr, renderedHtml) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    app.render('SummativeAnalysis', {school, logoDataUrl, data, header, elimuriselogoDataUrl}, <span class="fstat-no" title="function not covered" >(e</span>rr, renderedHtml) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      if (err) <span class="cstat-no" title="statement not covered" >reject(err);</span></span>
 <span class="cstat-no" title="statement not covered" >      resolve(renderedHtml);</span>
     });
@@ -7209,7 +7209,7 @@ const rank = <span class="cstat-no" title="statement not covered" ><span class="
       contents: `
         &lt;hr style="border:2px solid black"&gt;
         &lt;div id="pageHeader"&gt;
-          &lt;img src="${herologoDataUrl}" alt="Learner" style="width:50px; border-radius: 5px;"&gt;
+          &lt;img src="${elimuriselogoDataUrl}" alt="Learner" style="width:50px; border-radius: 5px;"&gt;
           Powered By Elimurise
         &lt;/div&gt;
         &lt;div style="margin-top:10px;color: #444;text-align:center"&gt;
@@ -7238,19 +7238,19 @@ const rank = <span class="cstat-no" title="statement not covered" ><span class="
   const {term, test, stream, grade, type} = <span class="cstat-no" title="statement not covered" >req.query;</span>
   const query = <span class="cstat-no" title="statement not covered" >{};</span>
   let school = <span class="cstat-no" title="statement not covered" >req?.user?.school;</span>
-  let herologoDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
+  let elimuriselogoDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
   let imageDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
-  const herologo = <span class="cstat-no" title="statement not covered" >'logo.png';</span>
+  const elimuriselogo = <span class="cstat-no" title="statement not covered" >'logo.png';</span>
   const session = <span class="cstat-no" title="statement not covered" >req.current_session;</span>
   let logoDataUrl = <span class="cstat-no" title="statement not covered" >'';</span>
-  var _basePath = <span class="cstat-no" title="statement not covered" >herologo;</span>
+  var _basePath = <span class="cstat-no" title="statement not covered" >elimuriselogo;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (_basePath &amp;&amp; fs.existsSync(_basePath)) {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const imageBuffer = <span class="cstat-no" title="statement not covered" >fs.readFileSync(_basePath);</span>
       const base64Image = <span class="cstat-no" title="statement not covered" >imageBuffer.toString('base64');</span>
       const imageType = <span class="cstat-no" title="statement not covered" >'image/png';</span> // Adjust based on your image type (e.g., image/jpeg)
-<span class="cstat-no" title="statement not covered" >      herologoDataUrl = `data:${imageType};base64,${base64Image}`;</span>
+<span class="cstat-no" title="statement not covered" >      elimuriselogoDataUrl = `data:${imageType};base64,${base64Image}`;</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      logger.error('Error reading or encoding image file:', error);</span>
     }
@@ -7291,7 +7291,7 @@ const rank = <span class="cstat-no" title="statement not covered" ><span class="
   const html = <span class="cstat-no" title="statement not covered" >await new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    app.render(</span>
       'SummativeStreamAnalysis',
-      {school, logoDataUrl, data, header, herologoDataUrl, term, test: testData.name, isMultiStream: true},
+      {school, logoDataUrl, data, header, elimuriselogoDataUrl, term, test: testData.name, isMultiStream: true},
 <span class="fstat-no" title="function not covered" >      (e</span>rr, renderedHtml) =&gt; {
 <span class="cstat-no" title="statement not covered" >        if (err) <span class="cstat-no" title="statement not covered" >reject(err);</span></span>
 <span class="cstat-no" title="statement not covered" >        resolve(renderedHtml);</span>
@@ -7311,7 +7311,7 @@ const rank = <span class="cstat-no" title="statement not covered" ><span class="
       contents: `
         &lt;hr style="border:2px solid black"&gt;
         &lt;div id="pageHeader"&gt;
-          &lt;img src="${herologoDataUrl}" alt="Learner" style="width:50px; border-radius: 5px;"&gt;
+          &lt;img src="${elimuriselogoDataUrl}" alt="Learner" style="width:50px; border-radius: 5px;"&gt;
           Powered By Elimurise
         &lt;/div&gt;
         &lt;div style="margin-top:10px;color: #444;text-align:center"&gt;

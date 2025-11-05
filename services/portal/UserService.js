@@ -185,7 +185,7 @@ class UserService {
         email,
         'Elimurise Welcome Message',
         `
-          <p>Welcome to HERO . Click the button below to reset your password:</p>
+          <p>Welcome to elimurise . Click the button below to reset your password:</p>
           <a href="${resetLink}" 
             style="
               display: inline-block;
@@ -290,7 +290,7 @@ class UserService {
         email,
         'Elimurise Welcome Message',
         `
-          <p>Welcome to HERO . Click the button below to reset your password:</p>
+          <p>Welcome to elimurise . Click the button below to reset your password:</p>
           <a href="${resetLink}" 
             style="
               display: inline-block;

@@ -15,7 +15,7 @@ const {Parser} = require('json2csv');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '/hero/'); // specify the destination directory
+    cb(null, '/elimurise/'); // specify the destination directory
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname)); // set the file name

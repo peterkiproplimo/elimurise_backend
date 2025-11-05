@@ -15,7 +15,7 @@ const logger = require('../../../utils/logger'); // Simple message writer
 // Multer setup for CSV imports
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '/hero/');
+    cb(null, '/elimurise/');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));

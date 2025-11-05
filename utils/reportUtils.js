@@ -53,11 +53,11 @@ function generateSchoolLogoUrl(school) {
 }
 
 /**
- * Generate hero logo data URL
+ * Generate elimurise logo data URL
  */
 function generateElimuriseLogoUrl() {
-  const herologo = 'logo.png';
-  return generateImageDataUrl(herologo);
+  const elimuriselogo = 'logo.png';
+  return generateImageDataUrl(elimuriselogo);
 }
 
 /**

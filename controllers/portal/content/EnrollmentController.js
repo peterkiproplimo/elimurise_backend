@@ -72,7 +72,7 @@ router.get('/', checkPermission('enrollment', 'read'), async (req, res) => {
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '/hero/'); // Where the image goes
+    cb(null, '/elimurise/'); // Where the image goes
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname)); // Unique filename with timestamp

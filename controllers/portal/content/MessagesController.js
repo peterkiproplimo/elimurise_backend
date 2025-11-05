@@ -15,7 +15,7 @@ const mongoose = require('mongoose');
 // Configure multer for file uploads with local storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '/hero/'); // Store files in /attachments/ directory
+    cb(null, '/elimurise/'); // Store files in /attachments/ directory
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname)); // Unique filename with timestamp
