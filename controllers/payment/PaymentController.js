@@ -12,40 +12,6 @@ const SubscriptionService = require('../../services/portal/Subscription');
 const SchoolService = new schoolService();
 const BillingService = new billingService();
 
-// router.get('/confirm', async (req, res) => {
-//   try {
-//     // const controller = new PaymentsController();
-//     const order_tracking_id = req.query.OrderTrackingId;
-//     if (order_tracking_id) {
-//       const response = await PaymentService.getTransactionStatus(order_tracking_id);
-//       console.log(response);
-//       if (response.payment_status_description !== 'Completed') {
-//         return res.status(403).json({error: 'Fobbiden'});
-//       }
-//       const billing = await BillingService.getBillingInfoByOrderId(order_tracking_id);
-//       console.log(billing);
-//       if (!billing) {
-//         return res.status(403).json({error: 'Fobbiden'});
-//       }
-//       if (!billing.payment) {
-//         const payment = await Payments.create(response);
-//         billing.payment = payment;
-//         billing.status = 'active';
-//         billing.save();
-//       }
-
-//       return res.redirect(`${process.env.URL}register?completed=true`);
-//     } else {
-//       throw Error('Internal Server Error');
-//     }
-//   } catch (error) {
-//     console.log(error);
-
-//     logger.error(error);
-//     res.status(404).send({error: 'Internal Server Error'});
-//   }
-// });
-
 router.get('/confirm', async (req, res) => {
   try {
     // const controller = new PaymentsController();

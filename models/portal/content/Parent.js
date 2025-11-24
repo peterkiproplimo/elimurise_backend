@@ -64,17 +64,7 @@ const parentSchema = new mongoose.Schema(
 );
 parentSchema.index({email: 1, id_no: 1, school: 1}, {unique: true});
 // Hash password before saving
-// parentSchema.pre('save', async function (next) {
-//   if (!this.isModified('password')) return next();
 
-//   try {
-//     const salt = await bcrypt.genSalt(10);
-//     this.password = await bcrypt.hash(this.password, salt);
-//     next();
-//   } catch (err) {
-//     next(err);
-//   }
-// });
 
 // Method to compare password
 parentSchema.methods.comparePassword = async function (candidatePassword) {
@@ -83,12 +73,6 @@ parentSchema.methods.comparePassword = async function (candidatePassword) {
 
 const Parent = mongoose.model('Parent', parentSchema);
 // Parent.collection
-//   .dropIndexes()
-//   .then(() => {
-//     console.log('All indexes dropped successfully.');
-//   })
-//   .catch(error => {
-//     console.error('Error dropping indexes:', error);
-//   });
+
 
 module.exports = Parent;

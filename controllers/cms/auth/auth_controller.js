@@ -78,12 +78,4 @@ router.post('/reset-password', async (req, res) => {
 });
 module.exports = router;
 
-// exports.register_admin = (req, res) => {
-//   try {
-//     var admin = { ...req.body };
-//     admin.created_by = req.user.username;
-//     res.send(admin);
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
+

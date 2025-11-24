@@ -37,6 +37,7 @@ const Notification = require('../controllers/portal/content/NotificationsCotroll
 const NoticeBoard = require('../controllers/portal/content/NoticeboardController');
 const TimetableController = require('../controllers/portal/content/TimetableController');
 const LevelController = require('../controllers/portal/content/level_controller');
+const EventController = require('../controllers/portal/content/EventController');
 const feeItemRoutes = require('./portal/content/feeItemRoutes');
 const feeStructureRoutes = require('./portal/content/feeStructureRoutes');
 const {auth} = require('../middleware/portal-auth');
@@ -83,6 +84,7 @@ router.use('/timetable', auth, TimetableController);
 router.use('/level', auth, LevelController);
 router.use('/fee-items', auth, feeItemRoutes);
 router.use('/fee-structures', auth, feeStructureRoutes);
+router.use('/events', auth, EventController);
 
 router.use('/elimurise', express.static('/elimurise'));
 router.get('/health', async (req, res) => {

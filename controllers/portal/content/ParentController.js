@@ -46,12 +46,14 @@ router.get('/', checkPermission('parents', 'read'), async (req, res) => {
     const {page = 1, limit = 10, search, sortBy, sortOrder} = req.query;
     const query = {
       school: req.user.school._id,
-      $or: [
-        {firstname: {$regex: new RegExp(search, 'i')}},
-        {lastname: {$regex: new RegExp(search, 'i')}},
-        {surname: {$regex: new RegExp(search, 'i')}},
-        {email: {$regex: new RegExp(search, 'i')}},
-      ],
+      ...(search ? {
+        $or: [
+          {first_name: {$regex: new RegExp(search, 'i')}},
+          {last_name: {$regex: new RegExp(search, 'i')}},
+          {surname: {$regex: new RegExp(search, 'i')}},
+          {email: {$regex: new RegExp(search, 'i')}},
+        ],
+      } : {}),
     };
     const parents = await parentService.getParents(Number(page), Number(limit), query, sortBy, sortOrder);
 
