@@ -4,6 +4,9 @@ const SmsRecipient = require('../models/smsRecipient');
 const SmsTransaction = require('../models/smsTransaction');
 const SmsDeliveryLog = require('../models/smsDeliveryLog');
 const onfon = require('../services/onfonmediaService');
+const Parent = require('../models/portal/content/Parent');
+const Learner = require('../models/portal/content/Learner');
+const Teacher = require('../models/portal/content/Teacher');
 
 // POST /api/sms/send
 async function sendSMS(req, res) {
@@ -247,10 +250,79 @@ async function listMessages(req, res) {
   }
 }
 
+// GET /api/sms/recipient-groups/:schoolId
+async function getRecipientGroups(req, res) {
+  try {
+    const { schoolId } = req.params;
+    
+    // Convert schoolId to ObjectId if it's a valid ObjectId string, otherwise use as string
+    let schoolQuery;
+    try {
+      const mongoose = require('mongoose');
+      schoolQuery = mongoose.Types.ObjectId.isValid(schoolId) 
+        ? mongoose.Types.ObjectId(schoolId) 
+        : schoolId;
+    } catch (err) {
+      schoolQuery = schoolId;
+    }
+
+    // Get parents count and phone numbers
+    const parents = await Parent.find({ 
+      school: schoolQuery,
+      phone: { $exists: true, $ne: null, $ne: '' }
+    }).select('phone').lean();
+    const parentPhones = parents.map(p => p.phone).filter(Boolean);
+
+    // Get students count - need to get guardian phone numbers
+    const learners = await Learner.find({ 
+      school: schoolQuery,
+      status: { $ne: 'D' } // Exclude dismissed/graduated
+    }).populate('guardian', 'phone').populate('guardian2', 'phone').lean();
+    
+    const studentPhones = [];
+    learners.forEach(learner => {
+      if (learner.guardian && learner.guardian.phone) {
+        studentPhones.push(learner.guardian.phone);
+      }
+      if (learner.guardian2 && learner.guardian2.phone) {
+        studentPhones.push(learner.guardian2.phone);
+      }
+    });
+    // Remove duplicates
+    const uniqueStudentPhones = [...new Set(studentPhones)];
+
+    // Get staff/teachers count and phone numbers
+    const teachers = await Teacher.find({ 
+      school: schoolQuery,
+      phone: { $exists: true, $ne: null, $ne: '' }
+    }).select('phone').lean();
+    const staffPhones = teachers.map(t => t.phone).filter(Boolean);
+
+    return res.json({
+      parents: {
+        count: parentPhones.length,
+        phones: parentPhones,
+      },
+      students: {
+        count: uniqueStudentPhones.length,
+        phones: uniqueStudentPhones,
+      },
+      staff: {
+        count: staffPhones.length,
+        phones: staffPhones,
+      },
+    });
+  } catch (err) {
+    console.error('getRecipientGroups error', err);
+    return res.status(500).json({ message: err.message });
+  }
+}
+
 module.exports = {
   sendSMS,
   webhook,
   getWallet,
   topUpWallet,
   listMessages,
+  getRecipientGroups,
 };

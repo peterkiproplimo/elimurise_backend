@@ -22,4 +22,7 @@ router.get('/purchases/:schoolId', smsPurchaseController.getPurchaseHistory);
 // List messages
 router.get('/messages', smsController.listMessages);
 
+// Get recipient groups (parents, students, staff) with phone numbers
+router.get('/recipient-groups/:schoolId', smsController.getRecipientGroups);
+
 module.exports = router;
