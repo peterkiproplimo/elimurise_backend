@@ -71,7 +71,7 @@ async function purchaseSMS(req, res) {
         PartyA: phoneNumber,
         PartyB: shortcode,
         PhoneNumber: phoneNumber,
-        CallBackURL: `${process.env.BASE_URL || 'http://localhost:5001'}/api/sms/purchase-callback`,
+        CallBackURL: `https://elimurise-backend.onrender.com/api/sms/purchase-callback`,
         AccountReference: `SMS-${schoolId}-${purchase._id}`,
         TransactionDesc: `Purchase ${tokens} SMS tokens`,
       };

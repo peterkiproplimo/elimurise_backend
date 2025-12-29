@@ -35,9 +35,7 @@ const depositMoney = async (req, res) => {
 
       const consumer_key = "GJmk0oWoLPUqFCeJqKiHzGojZK8EdJyeZn6feiGge2yx02pi";
       const consumer_secret = "neJK0ula6Gcw0lH3MDjpsrPNibJEiv5t2XJBNgcoGPuuFOP1YNVGmflMTFAMUA6L";
-      // https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials
-    // const url = "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
-    
+  
       const url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
     
 
@@ -64,12 +62,11 @@ const depositMoney = async (req, res) => {
         PartyA: phoneNumber,
         PartyB: shortcode,
         PhoneNumber: phoneNumber,
-        CallBackURL: `https://frontoffice-t61e.onrender.com/mpesa/deposit-callback`,
+        CallBackURL: `https://elimurise-backend.onrender.com/mpesa/deposit-callback`,
         AccountReference: phoneNumber,
         TransactionDesc: "Deposit to School Account",
       };
 
-      // "https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
       const stkResponse = await axios.post(
         "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
         stkPushData,
@@ -167,8 +164,8 @@ const withdraw = async (req, res) => {
         PartyA: shortcode,
         PartyB: parseInt(phone),
         Remarks: `Customer Withdrawal`,
-        QueueTimeOutURL: `https://frontoffice-t61e.onrender.com/mpesa/transaction-timeout`,
-        ResultURL: `https://frontoffice-t61e.onrender.com/mpesa/transaction-result`,
+        QueueTimeOutURL: `https://elimurise-backend.onrender.com/mpesa/transaction-timeout`,
+        ResultURL: `https://elimurise-backend.onrender.com/mpesa/transaction-result`,
         Occassion: `Customer Withdrawal`,
       };
 
@@ -268,8 +265,8 @@ const transactionStatus = async (req, res) => {
         TransactionID: transactionId,
         PartyA: shortcode,
         IdentifierType: "4",
-        ResultURL: `${process.env.BASE_URL}/api/mpesa/transaction-status-result`,
-        QueueTimeOutURL: `${process.env.BASE_URL}/api/mpesa/transaction-status-timeout`,
+        ResultURL: `https://elimurise-backend.onrender.com/api/mpesa/transaction-status-result`,
+        QueueTimeOutURL: `https://elimurise-backend.onrender.com/api/mpesa/transaction-status-timeout`,
         Remarks: "Transaction status query",
         Occassion: "Status check",
       };
