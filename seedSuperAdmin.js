@@ -9,7 +9,7 @@ const seedSuperAdmin = async () => {
     const URL1 = "mongodb+srv://Safaribust:8R4NGbiciCMxCQX1@cluster0.yuiecha.mongodb.net/frontoffice?retryWrites=true&w=majority&appName=Cluster0";
     await mongoose.connect(URL1);
     console.log("Connected to MongoDB");
-
+ 
     // Superadmin user data
     const superAdminData = {
       firstname: "Super",

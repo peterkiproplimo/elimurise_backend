@@ -44,6 +44,7 @@ const googleConfigRoutes = require('./routes/frontoffice/googleConfigRoutes');
 const phoneCallRoutes = require('./routes/frontoffice/phoneCalls');
 const portfolioSummaryRoutes = require('./routes/frontoffice/portfolioSummary');
 const authRoutes = require('./routes/frontoffice/auth');
+const smsRoutes = require('./routes/sms');
 
 // Body parser middleware
 app.use(express.json({limit: '50mb'}));
@@ -107,6 +108,8 @@ app.use("/api/google-config", googleConfigRoutes);
 app.use("/api/phone-calls", phoneCallRoutes);
 app.use("/api/portfolio-summary", portfolioSummaryRoutes);
 app.use("/api/auth", authRoutes);
+// SMS module routes
+app.use('/api/sms', smsRoutes);
 
 // Serve uploaded files
 app.use('/uploads', express.static('uploads'));
