@@ -1,4 +1,5 @@
-const {sendEmail} = require('../utils/email');
+const emailUtils = require('../utils/email');
+const sendEmail = emailUtils.sendEmail;
 class NotificationService {
   async sendMail(name, email, subject, body) {
     console.log(body);

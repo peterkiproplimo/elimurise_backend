@@ -1,17 +1,25 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const path = require('path');
-const logger = require('./utils/logger');
+import dotenv from 'dotenv';
+dotenv.config();
+
+import express from 'express';
+
+import mongoose from 'mongoose';
+import cors from 'cors';
+import path from 'path';
+// import logger from './utils/logger.js';
 
 const app = express();
-const server = require('http').createServer(app);
+import http from 'http';
 
+const server = http.createServer(app);
 // Socket.io implementation
-const io = require('socket.io')(server, {
+
+import { Server } from 'socket.io';
+
+const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: '*', // allow all origins
+    methods: ['GET', 'POST'], // optional
   },
 });
 
@@ -19,36 +27,44 @@ const io = require('socket.io')(server, {
 app.set('socketio', io);
 
 // Import routes
-const cms_routes = require('./routes/cms');
-const portal_routes = require('./routes/portal');
-const learner = require('./routes/learner');
-const PaymentsController = require('./controllers/payment/PaymentController');
+// Routes
+import cms_routes from './routes/cms.js';
+import portal_routes from './routes/portal.js';
+import learner from './routes/learner.js';
+import smsRoutes from './routes/sms.js';
 
-// Import frontoffice controllers (now with routes inline)
-const clientController = require('./controllers/frontoffice/client');
-const visitorController = require('./controllers/frontoffice/visitorController');
-const generalController = require('./controllers/frontoffice/general');
-const managementController = require('./controllers/frontoffice/management');
-const salesController = require('./controllers/frontoffice/sales');
-const onlineApplicantsController = require('./controllers/frontoffice/onlineApplicantsController');
-const complaintsController = require('./controllers/frontoffice/complaintsController');
-const frontOfficeController = require('./controllers/frontoffice/frontOfficeController');
-// Keep other routes that haven't been refactored yet
-const certificateRoutes = require('./routes/frontoffice/certificateRoutes');
-const mpesaRoutes = require('./routes/frontoffice/mpesaRoutes');
-const cohortRoutes = require('./routes/frontoffice/cohortRoutes');
-const subjectRoutes = require('./routes/frontoffice/subjectRoutes');
-const competencyRoutes = require('./routes/frontoffice/competencyRoutes');
-const projectEvidenceRoutes = require('./routes/frontoffice/projectEvidenceRoutes');
-const googleConfigRoutes = require('./routes/frontoffice/googleConfigRoutes');
-const phoneCallRoutes = require('./routes/frontoffice/phoneCalls');
-const portfolioSummaryRoutes = require('./routes/frontoffice/portfolioSummary');
-const authRoutes = require('./routes/frontoffice/auth');
-const smsRoutes = require('./routes/sms');
+// Controllers
+import PaymentsController from './controllers/payment/PaymentController.js';
+
+// Frontoffice controllers
+import clientController from './controllers/frontoffice/client.js';
+import visitorController from './controllers/frontoffice/visitorController.js';
+import generalController from './controllers/frontoffice/general.js';
+import managementController from './controllers/frontoffice/management.js';
+import salesController from './controllers/frontoffice/sales.js';
+import onlineApplicantsController from './controllers/frontoffice/onlineApplicantsController.js';
+import complaintsController from './controllers/frontoffice/complaintsController.js';
+import frontOfficeController from './controllers/frontoffice/frontOfficeController.js';
+
+// Other routes
+import certificateRoutes from './routes/frontoffice/certificateRoutes.js';
+import mpesaRoutes from './routes/frontoffice/mpesaRoutes.js';
+import cohortRoutes from './routes/frontoffice/cohortRoutes.js';
+import subjectRoutes from './routes/frontoffice/subjectRoutes.js';
+import competencyRoutes from './routes/frontoffice/competencyRoutes.js';
+import projectEvidenceRoutes from './routes/frontoffice/projectEvidenceRoutes.js';
+import googleConfigRoutes from './routes/frontoffice/googleConfigRoutes.js';
+import phoneCallRoutes from './routes/frontoffice/phoneCalls.js';
+import portfolioSummaryRoutes from './routes/frontoffice/portfolioSummary.js';
+import authRoutes from './routes/frontoffice/auth.js';
+// import smsRoutes from './routes/sms.js';
+import templatesRoutes from './routes/templates.js'; // ✅ import default export
+
 
 // Body parser middleware
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb', extended: true}));
+
 
 // CORS configuration
 const corsOptions = {
@@ -60,7 +76,7 @@ const corsOptions = {
     if (origin === 'http://localhost:5173') return callback(null, true);
     
     // Allow the production URL from environment variables
-    if (process.env.URL && origin === process.env.URL) return callback(null, true);
+    if (process.env.URL_LOCAL && origin === process.env.URL_LOCAL) return callback(null, true);
     
     // Allow CMS URL if it exists
     if (process.env.CMSURL && origin === process.env.CMSURL) return callback(null, true);
@@ -110,6 +126,9 @@ app.use("/api/portfolio-summary", portfolioSummaryRoutes);
 app.use("/api/auth", authRoutes);
 // SMS module routes
 app.use('/api/sms', smsRoutes);
+
+// Templates module routes
+app.use('/api/smstemplates', templatesRoutes);
 
 // Serve uploaded files
 app.use('/uploads', express.static('uploads'));

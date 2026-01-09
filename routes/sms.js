@@ -17,6 +17,7 @@ router.post('/wallet/topup', smsController.topUpWallet);
 router.post('/purchase', smsPurchaseController.purchaseSMS);
 router.post('/purchase-callback', smsPurchaseController.purchaseCallback);
 router.get('/purchase/:purchaseId', smsPurchaseController.getPurchaseStatus);
+router.get('/purchase-by-checkout/:checkoutRequestID', smsPurchaseController.getPurchaseByCheckout);
 router.get('/purchases/:schoolId', smsPurchaseController.getPurchaseHistory);
 
 // List messages

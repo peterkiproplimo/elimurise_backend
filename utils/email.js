@@ -1,6 +1,7 @@
-const nodemailer = require('nodemailer');
-const {generateBody} = require('./email-template');
-exports.sendEmail = async (name, email, subject, html, headers) => {
+import nodemailer from 'nodemailer';
+import { generateBody } from './email-template.js';
+
+export const sendEmail = async (name, email, subject, html, headers) => {
   console.log(name);
   try {
     const transporter = nodemailer.createTransport({
@@ -11,25 +12,26 @@ exports.sendEmail = async (name, email, subject, html, headers) => {
         user: process.env.MAIL_USERNAME,
         pass: process.env.MAIL_PASSWORD,
       },
-      debug: true, // Enable debug output
-      logger: true, // Log information to console
-
+      debug: true,
+      logger: true,
       tls: {
-        rejectUnauthorized: false, // Use cautiously, only if necessary
+        rejectUnauthorized: false,
       },
     });
+
     const body = generateBody(name, subject, html);
 
     await transporter.sendMail({
-      from: 'Elimurise CBC System <' + process.env.MAIL_FROM_ADDRESS + '>',
+      from: `Elimurise CBC System <${process.env.MAIL_FROM_ADDRESS}>`,
       to: email,
-      subject: subject,
+      subject,
       html: body,
-      headers: headers,
+      headers,
     });
+
     console.log('email sent successfully');
   } catch (error) {
     console.log('email not sent');
-    console.log(error);
+    console.error(error);
   }
 };

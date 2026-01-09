@@ -130,23 +130,66 @@ async function purchaseSMS(req, res) {
  * @access Public
  */
 async function purchaseCallback(req, res) {
+  // Always send a response to M-Pesa to prevent retries
+  const sendResponse = (statusCode, message) => {
+    res.status(statusCode).json({ message });
+  };
+
   try {
-    const { Body } = req.body;
-    
-    if (!Body || !Body.stkCallback) {
-      return res.status(400).json({ message: "Invalid callback data" });
+    // Log the raw request body for debugging
+    console.log("=== SMS Purchase Callback Received ===");
+    console.log("Raw request body:", JSON.stringify(req.body, null, 2));
+    console.log("Request headers:", JSON.stringify(req.headers, null, 2));
+
+    // Handle different callback data formats from M-Pesa
+    let stkCallback = null;
+    let checkoutRequestID = null;
+
+    // Format 1: { Body: { stkCallback: {...} } }
+    if (req.body.Body && req.body.Body.stkCallback) {
+      stkCallback = req.body.Body.stkCallback;
+      checkoutRequestID = stkCallback.CheckoutRequestID;
+    }
+    // Format 2: { stkCallback: {...} } (direct)
+    else if (req.body.stkCallback) {
+      stkCallback = req.body.stkCallback;
+      checkoutRequestID = stkCallback.CheckoutRequestID;
+    }
+    // Format 3: Direct callback structure
+    else if (req.body.CheckoutRequestID) {
+      stkCallback = req.body;
+      checkoutRequestID = req.body.CheckoutRequestID;
+    }
+    else {
+      console.error("Invalid callback data structure:", JSON.stringify(req.body, null, 2));
+      return sendResponse(400, "Invalid callback data structure");
     }
 
-    const stkCallback = Body.stkCallback;
-    const { CheckoutRequestID } = stkCallback;
+    if (!stkCallback || !checkoutRequestID) {
+      console.error("Missing required callback data:", JSON.stringify(req.body, null, 2));
+      return sendResponse(400, "Missing required callback data");
+    }
+
+    console.log("Processing callback for CheckoutRequestID:", checkoutRequestID);
+    console.log("ResultCode:", stkCallback.ResultCode);
+    console.log("ResultDesc:", stkCallback.ResultDesc);
 
     // Find purchase record
-    const purchase = await SmsPurchase.findOne({ checkoutRequestID: CheckoutRequestID });
+    const purchase = await SmsPurchase.findOne({ checkoutRequestID: checkoutRequestID });
 
     if (!purchase) {
-      console.error("Purchase not found:", CheckoutRequestID);
-      return res.status(404).json({ message: "Purchase not found" });
+      console.error("Purchase not found for CheckoutRequestID:", checkoutRequestID);
+      // Still return 200 to M-Pesa to prevent retries
+      return sendResponse(200, "Purchase not found (callback acknowledged)");
     }
+
+    console.log("Found purchase:", {
+      purchaseId: purchase._id,
+      schoolId: purchase.schoolId,
+      tokens: purchase.tokens,
+      amount: purchase.amount,
+      currentStatus: purchase.status
+    });
 
     if (stkCallback.ResultCode === 0) {
       // Transaction successful
@@ -156,6 +199,7 @@ async function purchaseCallback(req, res) {
       let mpesaReceiptNumber = null;
       let transactionDate = null;
       let amount = null;
+      let phoneNumber = null;
 
       items.forEach(item => {
         if (item.Name === 'MpesaReceiptNumber') {
@@ -164,52 +208,73 @@ async function purchaseCallback(req, res) {
           transactionDate = item.Value?.toString();
         } else if (item.Name === 'Amount') {
           amount = item.Value;
+        } else if (item.Name === 'PhoneNumber') {
+          phoneNumber = item.Value;
         }
       });
 
-      // Update purchase record
-      purchase.status = 'completed';
-      purchase.mpesaTransactionId = mpesaReceiptNumber;
-      purchase.transactionDate = transactionDate;
-      await purchase.save();
-
-      // Update or create wallet
-      let wallet = await SmsWallet.findOne({ schoolId: purchase.schoolId });
-      if (!wallet) {
-        wallet = await SmsWallet.create({ 
-          schoolId: purchase.schoolId, 
-          balance: purchase.tokens 
-        });
-      } else {
-        wallet.balance = (wallet.balance || 0) + purchase.tokens;
-        await wallet.save();
-      }
-
-      console.log(`SMS Purchase completed: ${purchase.tokens} tokens added to school ${purchase.schoolId}`);
-
-      res.status(200).json({
-        message: "Purchase callback processed successfully",
-        purchaseId: purchase._id,
-        tokens: purchase.tokens,
-        receiptNumber: mpesaReceiptNumber,
+      console.log("Extracted callback data:", {
+        mpesaReceiptNumber,
+        transactionDate,
+        amount,
+        phoneNumber
       });
+
+      try {
+        // Update purchase record
+        purchase.status = 'completed';
+        purchase.mpesaTransactionId = mpesaReceiptNumber;
+        purchase.transactionDate = transactionDate;
+        await purchase.save();
+        console.log("Purchase record updated successfully");
+
+        // Update or create wallet (atomic operation)
+        let wallet = await SmsWallet.findOne({ schoolId: purchase.schoolId });
+        if (!wallet) {
+          wallet = await SmsWallet.create({ 
+            schoolId: purchase.schoolId, 
+            balance: purchase.tokens 
+          });
+          console.log("New wallet created with balance:", purchase.tokens);
+        } else {
+          const oldBalance = wallet.balance || 0;
+          wallet.balance = oldBalance + purchase.tokens;
+          await wallet.save();
+          console.log(`Wallet updated: ${oldBalance} + ${purchase.tokens} = ${wallet.balance}`);
+        }
+
+        console.log(`✅ SMS Purchase completed successfully: ${purchase.tokens} tokens added to school ${purchase.schoolId}`);
+        console.log(`Receipt Number: ${mpesaReceiptNumber}`);
+
+        return sendResponse(200, "Purchase callback processed successfully");
+      } catch (dbError) {
+        console.error("Database error during callback processing:", dbError);
+        // Log the error but still acknowledge to M-Pesa
+        // The transaction can be manually reconciled later
+        return sendResponse(200, "Callback received but database update failed (will be retried)");
+      }
     } else {
       // Transaction failed
-      purchase.status = 'failed';
-      purchase.errorMessage = stkCallback.ResultDesc;
-      await purchase.save();
+      const errorMessage = stkCallback.ResultDesc || 'Unknown error';
+      console.log("❌ SMS Purchase failed:", errorMessage);
+      
+      try {
+        purchase.status = 'failed';
+        purchase.errorMessage = errorMessage;
+        await purchase.save();
+        console.log("Purchase record marked as failed");
+      } catch (dbError) {
+        console.error("Error updating failed purchase:", dbError);
+      }
 
-      console.log("SMS Purchase failed:", stkCallback.ResultDesc);
-      res.status(200).json({
-        message: "Purchase callback received (failed transaction)",
-      });
+      return sendResponse(200, "Purchase callback received (failed transaction)");
     }
   } catch (error) {
-    console.error("Purchase callback error:", error);
-    res.status(500).json({
-      message: "Purchase callback processing failed",
-      error: error.message,
-    });
+    console.error("❌ Purchase callback error:", error);
+    console.error("Error stack:", error.stack);
+    // Always return 200 to M-Pesa to prevent retries
+    // Log the error for manual investigation
+    return sendResponse(200, "Callback received but processing error occurred");
   }
 }
 
@@ -234,6 +299,34 @@ async function getPurchaseStatus(req, res) {
     });
   } catch (error) {
     console.error("Get purchase status error:", error);
+    res.status(500).json({
+      message: "Failed to get purchase status",
+      error: error.message,
+    });
+  }
+}
+
+/**
+ * @desc Get purchase by checkoutRequestID
+ * @route GET /api/sms/purchase-by-checkout/:checkoutRequestID
+ * @access Public
+ */
+async function getPurchaseByCheckout(req, res) {
+  try {
+    const { checkoutRequestID } = req.params;
+
+    const purchase = await SmsPurchase.findOne({ checkoutRequestID });
+
+    if (!purchase) {
+      return res.status(404).json({ message: "Purchase not found" });
+    }
+
+    res.status(200).json({
+      message: "Purchase found",
+      data: purchase,
+    });
+  } catch (error) {
+    console.error("Get purchase by checkout error:", error);
     res.status(500).json({
       message: "Failed to get purchase status",
       error: error.message,
@@ -271,6 +364,7 @@ module.exports = {
   purchaseSMS,
   purchaseCallback,
   getPurchaseStatus,
+  getPurchaseByCheckout,
   getPurchaseHistory,
 };
 

@@ -7,6 +7,7 @@ const onfon = require('../services/onfonmediaService');
 const Parent = require('../models/portal/content/Parent');
 const Learner = require('../models/portal/content/Learner');
 const Teacher = require('../models/portal/content/Teacher');
+const School = require('../models/portal/content/School');
 
 // POST /api/sms/send
 async function sendSMS(req, res) {
@@ -253,59 +254,110 @@ async function listMessages(req, res) {
 // GET /api/sms/recipient-groups/:schoolId
 async function getRecipientGroups(req, res) {
   try {
+    const mongoose = require('mongoose');
     const { schoolId } = req.params;
-    
-    // Convert schoolId to ObjectId if it's a valid ObjectId string, otherwise use as string
+    const { grade } = req.query;
+
+    /** ------------------------------
+     * Resolve school
+     * ------------------------------ */
     let schoolQuery;
-    try {
-      const mongoose = require('mongoose');
-      schoolQuery = mongoose.Types.ObjectId.isValid(schoolId) 
-        ? mongoose.Types.ObjectId(schoolId) 
-        : schoolId;
-    } catch (err) {
-      schoolQuery = schoolId;
+
+    // Resolve school
+    if (schoolId === 'DEFAULT_SCHOOL' || !mongoose.Types.ObjectId.isValid(schoolId)) {
+      const firstSchool = await School.findOne({ active: true }).sort({ createdAt: 1 });
+      if (!firstSchool) {
+        return res.status(404).json({
+          message: 'No school found in database. Please create a school first.',
+        });
+      }
+      schoolQuery = firstSchool._id;
+    } else {
+      schoolQuery = new mongoose.Types.ObjectId(schoolId); // ✅ FIX
     }
 
-    // Get parents count and phone numbers
-    const parents = await Parent.find({ 
+    /** ------------------------------
+     * Learners (source of truth)
+     * ------------------------------ */
+    const learnerQuery = {
       school: schoolQuery,
-      phone: { $exists: true, $ne: null, $ne: '' }
-    }).select('phone').lean();
-    const parentPhones = parents.map(p => p.phone).filter(Boolean);
+      status: { $ne: 'D' }, // Exclude dismissed / graduated
+    };
 
-    // Get students count - need to get guardian phone numbers
-    const learners = await Learner.find({ 
-      school: schoolQuery,
-      status: { $ne: 'D' } // Exclude dismissed/graduated
-    }).populate('guardian', 'phone').populate('guardian2', 'phone').lean();
+   // Grade filter
+    if (grade && grade !== 'all' && mongoose.Types.ObjectId.isValid(grade)) {
+      learnerQuery.grade = new mongoose.Types.ObjectId(grade); // ✅ FIX
+    }
+
     
-    const studentPhones = [];
+    const learners = await Learner.find(learnerQuery)
+      .populate('guardian', 'phone')
+      .populate('guardian2', 'phone')
+      .populate('grade', 'name')
+      .lean();
+
+    /** ------------------------------
+     * Parents per grade
+     * ------------------------------ */
+    const parentsPerGradeMap = {};
+    const allParentPhones = new Set();
+    const studentPhones = new Set();
+
     learners.forEach(learner => {
-      if (learner.guardian && learner.guardian.phone) {
-        studentPhones.push(learner.guardian.phone);
+      const gradeId = learner.grade?._id?.toString() || 'UNKNOWN';
+      const gradeName = learner.grade?.name || 'Unknown Grade';
+
+      if (!parentsPerGradeMap[gradeId]) {
+        parentsPerGradeMap[gradeId] = {
+          gradeId,
+          gradeName,
+          phones: new Set(),
+        };
       }
-      if (learner.guardian2 && learner.guardian2.phone) {
-        studentPhones.push(learner.guardian2.phone);
+
+      if (learner.guardian?.phone) {
+        parentsPerGradeMap[gradeId].phones.add(learner.guardian.phone);
+        allParentPhones.add(learner.guardian.phone);
+        studentPhones.add(learner.guardian.phone);
+      }
+
+      if (learner.guardian2?.phone) {
+        parentsPerGradeMap[gradeId].phones.add(learner.guardian2.phone);
+        allParentPhones.add(learner.guardian2.phone);
+        studentPhones.add(learner.guardian2.phone);
       }
     });
-    // Remove duplicates
-    const uniqueStudentPhones = [...new Set(studentPhones)];
 
-    // Get staff/teachers count and phone numbers
-    const teachers = await Teacher.find({ 
+    const parentsByGrade = Object.values(parentsPerGradeMap).map(g => ({
+      gradeId: g.gradeId,
+      gradeName: g.gradeName,
+      count: g.phones.size,
+      phones: Array.from(g.phones),
+    }));
+
+    /** ------------------------------
+     * Staff / Teachers
+     * ------------------------------ */
+    const teachers = await Teacher.find({
       school: schoolQuery,
-      phone: { $exists: true, $ne: null, $ne: '' }
-    }).select('phone').lean();
+      phone: { $exists: true, $ne: null, $ne: '' },
+    }).select('phone')
+      .lean();
+
     const staffPhones = teachers.map(t => t.phone).filter(Boolean);
 
+    /** ------------------------------
+     * Final response
+     * ------------------------------ */
     return res.json({
       parents: {
-        count: parentPhones.length,
-        phones: parentPhones,
+        total: allParentPhones.size,
+        phones: Array.from(allParentPhones),
+        byGrade: parentsByGrade,
       },
       students: {
-        count: uniqueStudentPhones.length,
-        phones: uniqueStudentPhones,
+        count: studentPhones.size,
+        phones: Array.from(studentPhones),
       },
       staff: {
         count: staffPhones.length,
@@ -317,6 +369,7 @@ async function getRecipientGroups(req, res) {
     return res.status(500).json({ message: err.message });
   }
 }
+
 
 module.exports = {
   sendSMS,
